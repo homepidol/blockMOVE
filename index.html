@@ -9,266 +9,98 @@
 @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap');
 
 :root {
-–navy: #002a6e;
-–blue: #0057c2;
-–red: #c0392b;
-–green: #1a7a4a;
-–bg: #f0f3f8;
-–card: #ffffff;
-–border: #dde3ed;
-–text: #1a1a2e;
-–muted: #7a8599;
-–input-h: 48px;
-–radius: 12px;
+–navy:#002a6e; –blue:#0057c2; –red:#c0392b; –green:#1a7a4a;
+–bg:#f0f3f8; –card:#fff; –border:#dde3ed; –text:#1a1a2e; –muted:#7a8599;
 }
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{font-family:‘Nanum Gothic’,‘Apple SD Gothic Neo’,sans-serif;background:var(–bg);color:var(–text);min-height:100vh;font-size:15px;}
 
-- { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+/* 헤더 */
+.app-header{background:linear-gradient(135deg,var(–navy),var(–blue));padding:14px 20px 12px;position:sticky;top:0;z-index:200;box-shadow:0 2px 12px rgba(0,42,110,.35);}
+.header-inner{display:flex;align-items:center;gap:10px;}
+.header-title{color:#fff;font-size:17px;font-weight:800;}
+.header-title span{color:#7ec8ff;}
+.header-sub{color:rgba(255,255,255,.55);font-size:11px;margin-top:1px;}
 
-body {
-font-family: ‘Nanum Gothic’, ‘Apple SD Gothic Neo’, sans-serif;
-background: var(–bg);
-color: var(–text);
-min-height: 100vh;
-font-size: 15px;
-}
+/* 탭바 */
+.tab-bar{display:flex;background:var(–navy);border-bottom:1px solid rgba(255,255,255,.12);}
+.tab-btn{flex:1;padding:12px 0;color:rgba(255,255,255,.5);font-size:14px;font-weight:800;font-family:inherit;border:none;background:none;border-bottom:3px solid transparent;cursor:pointer;transition:all .2s;}
+.tab-btn.active{color:#fff;border-bottom-color:#7ec8ff;}
+.tab-content{display:none;}
+.tab-content.active{display:block;}
 
-/* ══ 헤더 ══ */
-.app-header {
-background: linear-gradient(135deg, var(–navy) 0%, var(–blue) 100%);
-padding: 14px 20px 12px;
-position: sticky;
-top: 0;
-z-index: 200;
-box-shadow: 0 2px 12px rgba(0,42,110,0.35);
-}
-.header-inner { display: flex; align-items: center; gap: 10px; }
-.header-icon { font-size: 22px; }
-.header-title { color: #fff; font-size: 17px; font-weight: 800; }
-.header-title span { color: #7ec8ff; }
-.header-sub { color: rgba(255,255,255,0.55); font-size: 11px; margin-top: 1px; }
+/* 폼 */
+.form-wrap{padding:16px;display:flex;flex-direction:column;gap:14px;padding-bottom:100px;}
+.section-card{background:var(–card);border-radius:12px;overflow:hidden;box-shadow:0 1px 6px rgba(0,42,110,.07);}
+.section-head{background:#f4f7fc;padding:11px 16px;font-size:12px;font-weight:800;color:var(–navy);border-bottom:1px solid var(–border);display:flex;align-items:center;gap:6px;}
+.section-body{padding:14px 16px;display:flex;flex-direction:column;gap:12px;}
+.field{display:flex;flex-direction:column;gap:5px;}
+.field label{font-size:12px;font-weight:800;color:var(–muted);}
+.field input,.field select,.field textarea{height:48px;padding:0 14px;border:1.5px solid var(–border);border-radius:10px;font-size:15px;font-family:inherit;color:var(–text);background:#fafbfd;outline:none;-webkit-appearance:none;transition:border-color .2s,box-shadow .2s;}
+.field select{background-image:url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘12’ height=‘8’%3E%3Cpath d=‘M1 1l5 5 5-5’ stroke=’%237a8599’ stroke-width=‘1.5’ fill=‘none’ stroke-linecap=‘round’/%3E%3C/svg%3E”);background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;}
+.field textarea{height:auto;min-height:76px;padding:12px 14px;resize:none;line-height:1.6;}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(–blue);box-shadow:0 0 0 3px rgba(0,87,194,.1);background:#fff;}
+.field input::placeholder,.field textarea::placeholder{color:#bec5d0;}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 
-/* ══ 탭바 ══ */
-.tab-bar {
-display: flex;
-background: var(–navy);
-border-bottom: 1px solid rgba(255,255,255,0.12);
-}
-.tab-btn {
-flex: 1;
-padding: 12px 0;
-color: rgba(255,255,255,0.5);
-font-size: 14px;
-font-weight: 800;
-font-family: inherit;
-border: none;
-background: none;
-border-bottom: 3px solid transparent;
-cursor: pointer;
-transition: all 0.2s;
-}
-.tab-btn.active { color: #fff; border-bottom-color: #7ec8ff; }
+/* 일정 아이템 */
+.schedule-list,.action-list{display:flex;flex-direction:column;gap:8px;}
+.sched-item{background:#f6f8fc;border:1px solid var(–border);border-radius:10px;padding:12px;}
+.sched-top{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;}
+.sched-bottom{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:end;}
+.sched-lbl{font-size:10px;font-weight:800;color:var(–muted);margin-bottom:4px;}
+.sched-input{height:40px;padding:0 10px;border:1.5px solid var(–border);border-radius:8px;font-size:14px;font-family:inherit;background:#fff;outline:none;width:100%;-webkit-appearance:none;color:var(–text);}
+.sched-input:focus{border-color:var(–blue);}
+.sched-select{height:40px;padding:0 26px 0 10px;border:1.5px solid var(–border);border-radius:8px;font-size:13px;font-family:inherit;font-weight:800;background:#fff url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘10’ height=‘7’%3E%3Cpath d=‘M1 1l4 4 4-4’ stroke=’%237a8599’ stroke-width=‘1.5’ fill=‘none’ stroke-linecap=‘round’/%3E%3C/svg%3E”) no-repeat right 8px center;outline:none;-webkit-appearance:none;width:100%;cursor:pointer;color:var(–text);}
 
-/* ══ 탭 컨텐츠 ══ */
-.tab-content { display: none; }
-.tab-content.active { display: block; }
+/* 요청사항 아이템 */
+.action-item{display:flex;gap:8px;align-items:center;}
+.action-item input{flex:1;height:44px;padding:0 12px;border:1.5px solid var(–border);border-radius:8px;font-size:14px;font-family:inherit;background:#fff;outline:none;-webkit-appearance:none;color:var(–text);}
+.action-item input:focus{border-color:var(–blue);}
+.action-item input::placeholder{color:#bec5d0;}
 
-/* ══ 입력 폼 ══ */
-.form-wrap { padding: 16px; display: flex; flex-direction: column; gap: 14px; padding-bottom: 100px; }
+.del-btn{width:36px;height:36px;flex-shrink:0;background:#fff0f0;border:1px solid #ffcccc;border-radius:8px;color:var(–red);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.add-btn{height:44px;background:#eef4ff;border:1.5px dashed #b3c8fa;border-radius:10px;color:var(–blue);font-size:14px;font-weight:800;font-family:inherit;cursor:pointer;width:100%;}
+.add-btn:active{background:#ddeaff;}
 
-.section-card {
-background: var(–card);
-border-radius: var(–radius);
-overflow: hidden;
-box-shadow: 0 1px 6px rgba(0,42,110,0.07);
-}
-.section-head {
-background: #f4f7fc;
-padding: 11px 16px;
-font-size: 12px;
-font-weight: 800;
-color: var(–navy);
-letter-spacing: 0.5px;
-border-bottom: 1px solid var(–border);
-display: flex;
-align-items: center;
-gap: 6px;
-}
-.section-body { padding: 14px 16px; display: flex; flex-direction: column; gap: 12px; }
+/* 하단 버튼바 */
+.bottom-bar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(–border);padding:12px 16px;padding-bottom:calc(12px + env(safe-area-inset-bottom));display:flex;gap:10px;z-index:150;box-shadow:0 -4px 20px rgba(0,42,110,.1);}
+.btn-save{height:50px;background:#fff;border:2px solid var(–blue);border-radius:12px;color:var(–blue);font-size:15px;font-weight:800;font-family:inherit;cursor:pointer;flex:1;}
+.btn-save:active{background:#f0f6ff;}
+.btn-copy{height:50px;background:linear-gradient(135deg,var(–navy),var(–blue));border:none;border-radius:12px;color:#fff;font-size:15px;font-weight:800;font-family:inherit;cursor:pointer;flex:2;display:flex;align-items:center;justify-content:center;gap:6px;}
+.btn-copy:active{opacity:.85;}
+.btn-copy.copied{background:var(–green);}
 
-/* ══ 폼 필드 ══ */
-.field { display: flex; flex-direction: column; gap: 5px; }
-.field label { font-size: 12px; font-weight: 800; color: var(–muted); }
-.field input, .field select, .field textarea {
-height: var(–input-h);
-padding: 0 14px;
-border: 1.5px solid var(–border);
-border-radius: 10px;
-font-size: 15px;
-font-family: inherit;
-color: var(–text);
-background: #fafbfd;
-outline: none;
--webkit-appearance: none;
-transition: border-color 0.2s, box-shadow 0.2s;
-}
-.field select {
-background-image: url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘12’ height=‘8’ viewBox=‘0 0 12 8’%3E%3Cpath d=‘M1 1l5 5 5-5’ stroke=’%237a8599’ stroke-width=‘1.5’ fill=‘none’ stroke-linecap=‘round’/%3E%3C/svg%3E”);
-background-repeat: no-repeat;
-background-position: right 14px center;
-padding-right: 36px;
-}
-.field textarea { height: auto; min-height: 76px; padding: 12px 14px; resize: none; line-height: 1.6; }
-.field input:focus, .field select:focus, .field textarea:focus {
-border-color: var(–blue);
-box-shadow: 0 0 0 3px rgba(0,87,194,0.1);
-background: #fff;
-}
-.field input::placeholder, .field textarea::placeholder { color: #bec5d0; }
-.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+/* 미리보기 */
+.preview-wrap{padding:16px;padding-bottom:100px;}
+.preview-note{background:#e8f0fe;border-left:4px solid var(–blue);border-radius:8px;padding:11px 14px;font-size:12px;font-weight:800;color:var(–navy);margin-bottom:14px;line-height:1.6;}
+.preview-scaler-wrap{overflow:hidden;border-radius:14px;box-shadow:0 4px 20px rgba(0,42,110,.13);background:#eef1f6;}
+#preview-iframe{border:none;display:block;transform-origin:top left;}
 
-/* ══ 일정 행 ══ */
-.schedule-list { display: flex; flex-direction: column; gap: 8px; }
-.sched-item {
-background: #f6f8fc;
-border: 1px solid var(–border);
-border-radius: 10px;
-padding: 12px 12px 10px;
-}
-.sched-top { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
-.sched-bottom { display: grid; grid-template-columns: 1fr auto auto; gap: 8px; align-items: end; }
-.sched-lbl { font-size: 10px; font-weight: 800; color: var(–muted); margin-bottom: 4px; }
-.sched-input {
-height: 40px; padding: 0 10px;
-border: 1.5px solid var(–border); border-radius: 8px;
-font-size: 14px; font-family: inherit; background: #fff; outline: none; width: 100%;
--webkit-appearance: none;
-}
-.sched-input:focus { border-color: var(–blue); }
-.sched-select {
-height: 40px; padding: 0 28px 0 10px;
-border: 1.5px solid var(–border); border-radius: 8px;
-font-size: 13px; font-family: inherit; font-weight: 800;
-background: #fff url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘10’ height=‘7’ viewBox=‘0 0 10 7’%3E%3Cpath d=‘M1 1l4 4 4-4’ stroke=’%237a8599’ stroke-width=‘1.5’ fill=‘none’ stroke-linecap=‘round’/%3E%3C/svg%3E”) no-repeat right 10px center;
-outline: none; -webkit-appearance: none; width: 100%; cursor: pointer;
-}
+/* 히스토리 */
+.history-wrap{padding:16px;padding-bottom:80px;}
+.history-empty{text-align:center;padding:60px 20px;color:var(–muted);}
+.history-empty .icon{font-size:48px;margin-bottom:10px;}
+.history-empty p{font-size:14px;font-weight:700;line-height:1.6;}
+.history-list{display:flex;flex-direction:column;gap:10px;}
+.history-card{background:var(–card);border-radius:12px;padding:16px;border:1px solid var(–border);position:relative;box-shadow:0 1px 6px rgba(0,42,110,.06);cursor:pointer;}
+.history-card:active{transform:scale(.98);}
+.hc-sn{font-size:18px;font-weight:800;color:var(–navy);}
+.hc-route{font-size:13px;font-weight:800;color:var(–red);margin:3px 0 6px;}
+.hc-meta{font-size:12px;color:var(–muted);font-weight:700;line-height:1.8;}
+.hc-del{position:absolute;top:14px;right:14px;width:30px;height:30px;background:#fff0f0;border:1px solid #ffcccc;border-radius:8px;color:var(–red);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
 
-/* ══ 요청사항 ══ */
-.action-list { display: flex; flex-direction: column; gap: 8px; }
-.action-item { display: flex; gap: 8px; align-items: center; }
-.action-item input {
-flex: 1; height: 44px; padding: 0 12px;
-border: 1.5px solid var(–border); border-radius: 8px;
-font-size: 14px; font-family: inherit; background: #fff; outline: none; -webkit-appearance: none;
-}
-.action-item input:focus { border-color: var(–blue); }
-
-.del-btn {
-width: 36px; height: 36px; flex-shrink: 0;
-background: #fff0f0; border: 1px solid #ffcccc; border-radius: 8px;
-color: var(–red); font-size: 15px; cursor: pointer;
-display: flex; align-items: center; justify-content: center;
-}
-.add-btn {
-height: 44px; background: #eef4ff; border: 1.5px dashed #b3c8fa;
-border-radius: 10px; color: var(–blue); font-size: 14px; font-weight: 800;
-font-family: inherit; cursor: pointer; width: 100%; transition: background 0.15s;
-}
-.add-btn:active { background: #ddeaff; }
-
-/* ══ 하단 고정 버튼 ══ */
-.bottom-bar {
-position: fixed;
-bottom: 0; left: 0; right: 0;
-background: #fff;
-border-top: 1px solid var(–border);
-padding: 12px 16px;
-padding-bottom: calc(12px + env(safe-area-inset-bottom));
-display: flex;
-gap: 10px;
-z-index: 150;
-box-shadow: 0 -4px 20px rgba(0,42,110,0.1);
-}
-.btn-save {
-height: 50px; background: #fff; border: 2px solid var(–blue); border-radius: 12px;
-color: var(–blue); font-size: 15px; font-weight: 800; font-family: inherit;
-cursor: pointer; flex: 1; transition: background 0.15s;
-}
-.btn-save:active { background: #f0f6ff; }
-.btn-copy {
-height: 50px; background: linear-gradient(135deg, var(–navy), var(–blue));
-border: none; border-radius: 12px; color: #fff; font-size: 15px; font-weight: 800;
-font-family: inherit; cursor: pointer; flex: 2;
-display: flex; align-items: center; justify-content: center; gap: 6px;
-transition: opacity 0.15s;
-}
-.btn-copy:active { opacity: 0.85; }
-.btn-copy.copied { background: var(–green); }
-
-/* ══ 미리보기 탭 ══ */
-.preview-wrap { padding: 16px; padding-bottom: 100px; }
-.preview-note {
-background: #e8f0fe; border-left: 4px solid var(–blue);
-border-radius: 8px; padding: 11px 14px;
-font-size: 12px; font-weight: 800; color: var(–navy);
-margin-bottom: 14px; line-height: 1.6;
-}
-.preview-scaler-wrap {
-overflow: hidden;
-border-radius: 14px;
-box-shadow: 0 4px 20px rgba(0,42,110,0.13);
-background: #eef1f6;
-}
-#preview-iframe {
-border: none;
-display: block;
-transform-origin: top left;
-}
-
-/* ══ 히스토리 ══ */
-.history-wrap { padding: 16px; padding-bottom: 80px; }
-.history-empty { text-align: center; padding: 60px 20px; color: var(–muted); }
-.history-empty .icon { font-size: 48px; margin-bottom: 10px; }
-.history-empty p { font-size: 14px; font-weight: 700; line-height: 1.6; }
-.history-list { display: flex; flex-direction: column; gap: 10px; }
-.history-card {
-background: var(–card); border-radius: var(–radius); padding: 16px;
-border: 1px solid var(–border); position: relative;
-box-shadow: 0 1px 6px rgba(0,42,110,0.06); cursor: pointer;
-transition: transform 0.1s;
-}
-.history-card:active { transform: scale(0.98); }
-.hc-sn { font-size: 18px; font-weight: 800; color: var(–navy); }
-.hc-route { font-size: 13px; font-weight: 800; color: var(–red); margin: 3px 0 6px; }
-.hc-meta { font-size: 12px; color: var(–muted); font-weight: 700; line-height: 1.8; }
-.hc-del {
-position: absolute; top: 14px; right: 14px;
-width: 30px; height: 30px; background: #fff0f0;
-border: 1px solid #ffcccc; border-radius: 8px;
-color: var(–red); font-size: 14px; cursor: pointer;
-display: flex; align-items: center; justify-content: center;
-}
-
-/* ══ Toast ══ */
-.toast {
-position: fixed; bottom: 90px; left: 50%;
-transform: translateX(-50%) translateY(40px);
-background: #1a1a2e; color: #fff;
-padding: 11px 22px; border-radius: 24px;
-font-size: 13px; font-weight: 800; z-index: 999;
-opacity: 0; transition: transform 0.3s ease, opacity 0.3s ease;
-white-space: nowrap; pointer-events: none;
-}
-.toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+/* Toast */
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(40px);background:#1a1a2e;color:#fff;padding:11px 22px;border-radius:24px;font-size:13px;font-weight:800;z-index:999;opacity:0;transition:transform .3s,opacity .3s;white-space:nowrap;pointer-events:none;}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1;}
 </style>
 
 </head>
 <body>
 
-<!-- 헤더 -->
-
 <div class="app-header">
   <div class="header-inner">
-    <span class="header-icon">🚢</span>
+    <span style="font-size:22px;">🚢</span>
     <div>
       <div class="header-title">블럭이동 <span>공지 생성기</span></div>
       <div class="header-sub">Samsung Heavy Industries</div>
@@ -276,15 +108,13 @@ white-space: nowrap; pointer-events: none;
   </div>
 </div>
 
-<!-- 탭바 -->
-
 <div class="tab-bar">
   <button class="tab-btn active" onclick="switchTab('form')">✏️ 작성</button>
   <button class="tab-btn" onclick="switchTab('preview')">👁 미리보기</button>
   <button class="tab-btn" onclick="switchTab('history')">📁 저장</button>
 </div>
 
-<!-- ══ 작성 탭 ══ -->
+<!-- 작성 탭 -->
 
 <div id="tab-form" class="tab-content active">
 <div class="form-wrap">
@@ -316,15 +146,12 @@ white-space: nowrap; pointer-events: none;
         <div class="field">
           <label>이동 시간대</label>
           <select id="moveTime">
-            <option value="야간">야간</option>
-            <option value="주간">주간</option>
-            <option value="오전">오전</option>
-            <option value="오후">오후</option>
-            <option value="전일">전일</option>
+            <option value="야간">야간</option><option value="주간">주간</option>
+            <option value="오전">오전</option><option value="오후">오후</option><option value="전일">전일</option>
           </select>
         </div>
       </div>
-      <div class="field"><label>P/T 탑재 일정</label><input id="deadline" type="text" placeholder="예: 2026.5.9"></div>
+      <div class="field"><label>P/T 탑재 마감일</label><input id="deadline" type="text" placeholder="예: 2026.5.9"></div>
       <div class="field">
         <label>추가 이동 안내 <span style="font-weight:400;color:#bbb;">(선택)</span></label>
         <input id="extraNote" type="text" placeholder="예: 2686호선 블럭은 우선 텐트 적치장으로 이동">
@@ -355,11 +182,11 @@ white-space: nowrap; pointer-events: none;
 </div>
 </div>
 
-<!-- ══ 미리보기 탭 ══ -->
+<!-- 미리보기 탭 -->
 
 <div id="tab-preview" class="tab-content">
 <div class="preview-wrap">
-  <div class="preview-note">📌 PC 메일 화면 기준으로 제작된 미리보기입니다.<br>실제 메일은 PC에서 정상 크기로 표시됩니다.</div>
+  <div class="preview-note">📌 PC 메일 화면 기준 미리보기입니다. 실제 메일은 PC에서 정상 크기로 표시됩니다.</div>
   <div class="preview-scaler-wrap">
     <iframe id="preview-iframe" scrolling="no"></iframe>
   </div>
@@ -370,7 +197,7 @@ white-space: nowrap; pointer-events: none;
 </div>
 </div>
 
-<!-- ══ 저장 탭 ══ -->
+<!-- 저장 탭 -->
 
 <div id="tab-history" class="tab-content">
 <div class="history-wrap">
@@ -381,11 +208,14 @@ white-space: nowrap; pointer-events: none;
 <div class="toast" id="toast"></div>
 
 <script>
-let scheduleRows = [], actionItems = [];
-let schedId = 0, actId = 0;
+/* ── 상태 ── */
+var scheduleRows = [];
+var actionItems  = [];
+var schedId = 0;
+var actId   = 0;
 
-/* 초기화 */
-window.onload = () => {
+/* ── 초기화 ── */
+window.addEventListener('load', function() {
   document.getElementById('sn').value        = '2665';
   document.getElementById('tk').value        = '3,4TK';
   document.getElementById('sender').value    = 'LNG선공사1부설치1과 · 박철성';
@@ -397,327 +227,374 @@ window.onload = () => {
   document.getElementById('deadline').value  = '2026.5.9';
   document.getElementById('extraNote').value = '작업장 내 2686호선 블럭은 우선 텐트 적치장으로 이동 바랍니다.';
 
-  addScheduleRow('5/2 (토)', 'L/D COVER 패시베이션',      '천우테크',              'done');
-  addScheduleRow('5/4 (월)', 'L/D COVER 패시베이션 검사', '오전 09:00',            'ing');
-  addScheduleRow('5/4~5/5',  '보온작업',                   '승인',                  'ing');
-  addScheduleRow('5/6 (수)', '보온검사 & TORQUE 검사',     '오전 검사 후 TACK WD',  'plan');
+  addScheduleRow('5/2 (토)', 'L/D COVER 패시베이션',       '천우테크',             'done');
+  addScheduleRow('5/4 (월)', 'L/D COVER 패시베이션 검사',  '오전 09:00',           'ing');
+  addScheduleRow('5/4~5/5',  '보온작업',                    '승인',                 'ing');
+  addScheduleRow('5/6 (수)', '보온검사 & TORQUE 검사',      '오전 검사 후 TACK WD', 'plan');
 
   addActionRow('동커버 작업장 내 블럭 탑재 공간 정리를 완료해 주시기 바랍니다.');
   addActionRow('작업장 내 2686호선 블럭은 우선 텐트 적치장으로 이동해 주시기 바랍니다.');
   addActionRow('P/T 탑재 마감일 준수를 위해 일정 지연 없이 진행 바랍니다.');
   addActionRow('일정 변경 또는 이슈 발생 시 즉시 담당자에게 연락 주시기 바랍니다.');
 
-  renderHistory();
-};
-
-/* 탭 전환 */
-function switchTab(tab) {
-  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-  document.getElementById('tab-' + tab).classList.add('active');
-  ['form','preview','history'].forEach((t,i) => {
-    if (t === tab) document.querySelectorAll('.tab-btn')[i].classList.add('active');
+  /* ── 이벤트 위임: 일정 목록 ── */
+  document.getElementById('schedule-list').addEventListener('input', function(e) {
+    var el = e.target;
+    var item = el.closest('.sched-item');
+    if (!item) return;
+    var id = parseInt(item.dataset.id, 10);
+    var field = el.dataset.field;
+    if (!field) return;
+    var row = scheduleRows.find(function(r){ return r.id === id; });
+    if (row) row[field] = el.value;
   });
+  document.getElementById('schedule-list').addEventListener('change', function(e) {
+    var el = e.target;
+    var item = el.closest('.sched-item');
+    if (!item) return;
+    var id = parseInt(item.dataset.id, 10);
+    var field = el.dataset.field;
+    if (!field) return;
+    var row = scheduleRows.find(function(r){ return r.id === id; });
+    if (row) row[field] = el.value;
+  });
+  document.getElementById('schedule-list').addEventListener('click', function(e) {
+    var btn = e.target.closest('.del-btn');
+    if (!btn) return;
+    var item = btn.closest('.sched-item');
+    if (!item) return;
+    var id = parseInt(item.dataset.id, 10);
+    scheduleRows = scheduleRows.filter(function(r){ return r.id !== id; });
+    renderScheduleList();
+  });
+
+  /* ── 이벤트 위임: 요청사항 목록 ── */
+  document.getElementById('action-list').addEventListener('input', function(e) {
+    var el = e.target;
+    var item = el.closest('.action-item');
+    if (!item) return;
+    var id = parseInt(item.dataset.id, 10);
+    var act = actionItems.find(function(a){ return a.id === id; });
+    if (act) act.text = el.value;
+  });
+  document.getElementById('action-list').addEventListener('click', function(e) {
+    var btn = e.target.closest('.del-btn');
+    if (!btn) return;
+    var item = btn.closest('.action-item');
+    if (!item) return;
+    var id = parseInt(item.dataset.id, 10);
+    actionItems = actionItems.filter(function(a){ return a.id !== id; });
+    renderActionList();
+  });
+
+  renderHistory();
+});
+
+/* ── 탭 전환 ── */
+function switchTab(tab) {
+  document.querySelectorAll('.tab-content').forEach(function(el){ el.classList.remove('active'); });
+  document.querySelectorAll('.tab-btn').forEach(function(el){ el.classList.remove('active'); });
+  document.getElementById('tab-' + tab).classList.add('active');
+  var tabs = ['form','preview','history'];
+  var btns = document.querySelectorAll('.tab-btn');
+  btns[tabs.indexOf(tab)].classList.add('active');
   if (tab === 'preview') renderPreviewIframe();
   if (tab === 'history') renderHistory();
 }
 
-/* 일정 행 */
-function addScheduleRow(date='', content='', note='', status='plan') {
-  scheduleRows.push({ id: schedId++, date, content, note, status });
+/* ── 일정 행 추가 ── */
+function addScheduleRow(date, content, note, status) {
+  date    = date    || '';
+  content = content || '';
+  note    = note    || '';
+  status  = status  || 'plan';
+  scheduleRows.push({ id: schedId++, date: date, content: content, note: note, status: status });
   renderScheduleList();
 }
-function removeScheduleRow(id) {
-  scheduleRows = scheduleRows.filter(r => r.id !== id);
-  renderScheduleList();
-}
-function updateSched(id, field, val) {
-  const r = scheduleRows.find(r => r.id === id);
-  if (r) r[field] = val;
-}
+
+/* ── 일정 목록 렌더링 (입력 중엔 재렌더 안 함 → 이벤트 위임으로 처리) ── */
 function renderScheduleList() {
-  document.getElementById('schedule-list').innerHTML = scheduleRows.map(r => `
-    <div class="sched-item">
-      <div class="sched-top">
-        <div><div class="sched-lbl">일자</div><input class="sched-input" value="${esc(r.date)}" placeholder="5/2 (토)" oninput="updateSched(${r.id},'date',this.value)"></div>
-        <div><div class="sched-lbl">작업 내용</div><input class="sched-input" value="${esc(r.content)}" placeholder="작업 내용" oninput="updateSched(${r.id},'content',this.value)"></div>
-      </div>
-      <div class="sched-bottom">
-        <div><div class="sched-lbl">비고</div><input class="sched-input" value="${esc(r.note)}" placeholder="비고" oninput="updateSched(${r.id},'note',this.value)"></div>
-        <div>
-          <div class="sched-lbl">상태</div>
-          <select class="sched-select" style="width:82px;" onchange="updateSched(${r.id},'status',this.value)">
-            <option value="done" ${r.status==='done'?'selected':''}>✅완료</option>
-            <option value="ing"  ${r.status==='ing' ?'selected':''}>🔄진행</option>
-            <option value="plan" ${r.status==='plan'?'selected':''}>📌예정</option>
-          </select>
-        </div>
-        <button class="del-btn" onclick="removeScheduleRow(${r.id})">✕</button>
-      </div>
-    </div>`).join('');
+  var html = '';
+  scheduleRows.forEach(function(r) {
+    var doneS  = r.status === 'done'  ? 'selected' : '';
+    var ingS   = r.status === 'ing'   ? 'selected' : '';
+    var planS  = r.status === 'plan'  ? 'selected' : '';
+    html += '<div class="sched-item" data-id="' + r.id + '">' +
+      '<div class="sched-top">' +
+        '<div><div class="sched-lbl">일자</div>' +
+          '<input class="sched-input" data-field="date" value="' + safeVal(r.date) + '" placeholder="5/2 (토)"></div>' +
+        '<div><div class="sched-lbl">작업 내용</div>' +
+          '<input class="sched-input" data-field="content" value="' + safeVal(r.content) + '" placeholder="작업 내용"></div>' +
+      '</div>' +
+      '<div class="sched-bottom">' +
+        '<div><div class="sched-lbl">비고</div>' +
+          '<input class="sched-input" data-field="note" value="' + safeVal(r.note) + '" placeholder="비고"></div>' +
+        '<div><div class="sched-lbl">상태</div>' +
+          '<select class="sched-select" data-field="status" style="width:84px;">' +
+            '<option value="done" ' + doneS + '>✅완료</option>' +
+            '<option value="ing"  ' + ingS  + '>🔄진행</option>' +
+            '<option value="plan" ' + planS + '>📌예정</option>' +
+          '</select></div>' +
+        '<button class="del-btn" style="margin-top:18px;">✕</button>' +
+      '</div>' +
+    '</div>';
+  });
+  document.getElementById('schedule-list').innerHTML = html;
 }
 
-/* 요청사항 */
-function addActionRow(text='') {
-  actionItems.push({ id: actId++, text });
+/* ── 요청사항 추가 ── */
+function addActionRow(text) {
+  text = text || '';
+  actionItems.push({ id: actId++, text: text });
   renderActionList();
 }
-function removeActionRow(id) {
-  actionItems = actionItems.filter(a => a.id !== id);
-  renderActionList();
-}
-function updateAction(id, val) {
-  const a = actionItems.find(a => a.id === id);
-  if (a) a.text = val;
-}
+
+/* ── 요청사항 렌더링 ── */
 function renderActionList() {
-  document.getElementById('action-list').innerHTML = actionItems.map(a => `
-    <div class="action-item">
-      <input value="${esc(a.text)}" placeholder="요청사항 입력..." oninput="updateAction(${a.id},this.value)">
-      <button class="del-btn" onclick="removeActionRow(${a.id})">✕</button>
-    </div>`).join('');
+  var html = '';
+  actionItems.forEach(function(a) {
+    html += '<div class="action-item" data-id="' + a.id + '">' +
+      '<input value="' + safeVal(a.text) + '" placeholder="요청사항 입력...">' +
+      '<button class="del-btn">✕</button>' +
+    '</div>';
+  });
+  document.getElementById('action-list').innerHTML = html;
 }
 
-/* 이스케이프 */
+/* ── safeVal: value 속성에 안전하게 넣기 위한 이스케이프 ── */
+function safeVal(s) {
+  /* value="" 속성 안에서 큰따옴표·꺽쇠만 escape. & 은 그냥 둠(텍스트 입력값이므로) */
+  return (s || '').replace(/&/g,'&amp;').replace(/"/g,'&#34;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+/* ── HTML 출력용 이스케이프 (innerHTML/innerText 렌더링용) ── */
 function esc(s) {
-  return (s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
-/* 상태 뱃지 */
+/* ── 상태 뱃지 ── */
 function badge(status) {
-  const m = { done:['#d4edda','#1a7a4a','완료'], ing:['#fff3cd','#7a5700','진행중'], plan:['#e8f0fe','#003087','예정'] };
-  const [bg,fg,label] = m[status]||m.plan;
-  return `<span style="display:inline-block;padding:4px 14px;border-radius:20px;font-size:13px;font-weight:800;background:${bg};color:${fg};">${label}</span>`;
+  var m = { done:['#d4edda','#1a7a4a','완료'], ing:['#fff3cd','#7a5700','진행중'], plan:['#e8f0fe','#003087','예정'] };
+  var b = m[status] || m['plan'];
+  return '<span style="display:inline-block;padding:4px 14px;border-radius:20px;font-size:13px;font-weight:800;background:' + b[0] + ';color:' + b[1] + ';">' + b[2] + '</span>';
 }
 
-/* ══ PC 최적화 메일 HTML 생성 ══ */
+/* ── PC 최적화 메일 HTML 생성 ── */
 function buildEmailHTML() {
-  const g  = id => document.getElementById(id).value || '';
-  const sn = g('sn')||'XXXX', tk=g('tk'), sender=g('sender'), urgent=g('urgent');
-  const from=g('from'), to=g('to'), moveDate=g('moveDate'), moveTime=g('moveTime');
-  const deadline=g('deadline'), extra=g('extraNote');
+  var sn       = document.getElementById('sn').value        || 'XXXX';
+  var tk       = document.getElementById('tk').value        || '';
+  var sender   = document.getElementById('sender').value    || '';
+  var urgent   = document.getElementById('urgent').value    || '';
+  var from     = document.getElementById('from').value      || '';
+  var to       = document.getElementById('to').value        || '';
+  var moveDate = document.getElementById('moveDate').value  || '';
+  var moveTime = document.getElementById('moveTime').value  || '';
+  var deadline = document.getElementById('deadline').value  || '';
+  var extra    = document.getElementById('extraNote').value || '';
 
-  const schedHTML = scheduleRows.map((r,i) => `
-    <tr style="background:${i%2===1?'#f7f9fc':'#fff'};">
-      <td style="padding:14px 18px;text-align:center;font-size:15px;font-weight:800;border-bottom:1px solid #eef0f3;vertical-align:middle;white-space:nowrap;"><strong>${esc(r.date)}</strong></td>
-      <td style="padding:14px 18px;text-align:center;font-size:15px;font-weight:700;border-bottom:1px solid #eef0f3;vertical-align:middle;">${esc(r.content)}</td>
-      <td style="padding:14px 18px;text-align:center;font-size:14px;font-weight:700;color:#555;border-bottom:1px solid #eef0f3;vertical-align:middle;">${esc(r.note)}</td>
-      <td style="padding:14px 18px;text-align:center;border-bottom:1px solid #eef0f3;vertical-align:middle;">${badge(r.status)}</td>
-    </tr>`).join('');
+  var schedHTML = '';
+  scheduleRows.forEach(function(r, i) {
+    var bg = i % 2 === 1 ? '#f7f9fc' : '#fff';
+    schedHTML +=
+      '<tr style="background:' + bg + ';">' +
+      '<td style="padding:14px 18px;text-align:center;font-size:15px;font-weight:800;border-bottom:1px solid #eef0f3;vertical-align:middle;white-space:nowrap;"><strong>' + esc(r.date) + '</strong></td>' +
+      '<td style="padding:14px 18px;text-align:center;font-size:15px;font-weight:700;border-bottom:1px solid #eef0f3;vertical-align:middle;">' + esc(r.content) + '</td>' +
+      '<td style="padding:14px 18px;text-align:center;font-size:14px;font-weight:700;color:#555;border-bottom:1px solid #eef0f3;vertical-align:middle;">' + esc(r.note) + '</td>' +
+      '<td style="padding:14px 18px;text-align:center;border-bottom:1px solid #eef0f3;vertical-align:middle;">' + badge(r.status) + '</td>' +
+      '</tr>';
+  });
 
-  const actHTML = actionItems.filter(a=>a.text).map(a =>
-    `<tr><td style="padding:9px 0;font-size:14px;font-weight:700;color:#333;line-height:1.7;border-bottom:1px solid #f5e8e8;">
-      <span style="color:#c0392b;margin-right:8px;font-size:11px;">▶</span>${esc(a.text)}</td></tr>`).join('');
+  var actHTML = '';
+  actionItems.forEach(function(a) {
+    if (!a.text) return;
+    actHTML += '<tr><td style="padding:9px 0;font-size:14px;font-weight:700;color:#333;line-height:1.7;border-bottom:1px solid #f5e8e8;">' +
+      '<span style="color:#c0392b;margin-right:8px;font-size:11px;">▶</span>' + esc(a.text) + '</td></tr>';
+  });
 
-  return `<!DOCTYPE html>
-<html lang="ko">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap');
-  body{margin:0;padding:28px 20px;background:#eef1f6;font-family:'Nanum Gothic','Apple SD Gothic Neo',sans-serif;}
-</style>
+  var schedSection = schedHTML ? (
+    '<div style="padding:26px 32px;border-bottom:1px solid #eef0f3;">' +
+    '<div style="font-size:11px;font-weight:800;color:#aaa;letter-spacing:1.5px;margin-bottom:16px;">📅 작업 일정</div>' +
+    '<table style="width:100%;border-collapse:collapse;">' +
+    '<thead><tr style="background:#002a6e;">' +
+    '<th style="padding:14px 18px;text-align:center;font-size:14px;font-weight:800;color:#fff;white-space:nowrap;">일자</th>' +
+    '<th style="padding:14px 18px;text-align:center;font-size:14px;font-weight:800;color:#fff;">작업 내용</th>' +
+    '<th style="padding:14px 18px;text-align:center;font-size:14px;font-weight:800;color:#fff;">비고</th>' +
+    '<th style="padding:14px 18px;text-align:center;font-size:14px;font-weight:800;color:#fff;white-space:nowrap;">상태</th>' +
+    '</tr></thead><tbody>' + schedHTML + '</tbody></table></div>'
+  ) : '';
 
-</head>
-<body>
-<div style="max-width:680px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 8px 40px rgba(0,42,110,0.15);">
+  var actSection = actHTML ? (
+    '<div style="padding:26px 32px;border-bottom:1px solid #eef0f3;">' +
+    '<div style="font-size:11px;font-weight:800;color:#aaa;letter-spacing:1.5px;margin-bottom:16px;">✅ 담당자 조치 요청사항</div>' +
+    '<div style="background:#fff5f5;border:2px solid #ffcccc;border-radius:14px;padding:20px 22px;">' +
+    '<div style="font-size:15px;font-weight:800;color:#c0392b;margin-bottom:14px;">🔴 아래 사항을 반드시 확인해 주세요</div>' +
+    '<table style="width:100%;border-collapse:collapse;">' + actHTML + '</table>' +
+    '</div></div>'
+  ) : '';
 
-  <!-- 헤더 -->
+  var extraHtml = extra
+    ? '<div style="font-size:13px;font-weight:800;color:#666;text-align:center;margin-top:12px;">※ ' + esc(extra) + '</div>'
+    : '';
 
-  <div style="background:linear-gradient(135deg,#002a6e 0%,#0057c2 100%);padding:32px 36px;position:relative;overflow:hidden;">
-    <div style="position:absolute;top:-70px;right:-70px;width:240px;height:240px;border-radius:50%;background:rgba(255,255,255,0.05);pointer-events:none;"></div>
-    <div style="display:inline-block;background:#ff3333;color:#fff;font-size:11px;font-weight:800;letter-spacing:1px;padding:4px 14px;border-radius:6px;margin-bottom:14px;">🚢 블럭이동 공식 공지</div>
-    <div style="color:#fff;font-size:23px;font-weight:800;line-height:1.45;">[동커버] SN${esc(sn)} 블럭 이동 요청<br><span style="color:#7ec8ff;font-size:26px;">${esc(from)} → ${esc(to)}</span></div>
-    <div style="color:rgba(255,255,255,0.65);font-size:13px;margin-top:10px;font-weight:700;">발신: ${esc(sender)}</div>
-  </div>
+  return '<!DOCTYPE html>\n<html lang="ko">\n<head>\n<meta charset="UTF-8">\n' +
+    '<meta name="viewport" content="width=device-width,initial-scale=1.0">\n' +
+    '<style>@import url(\'https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap\');' +
+    'body{margin:0;padding:28px 20px;background:#eef1f6;font-family:\'Nanum Gothic\',\'Apple SD Gothic Neo\',sans-serif;}</style>\n' +
 
-  <!-- 긴급 배너 -->
+```
+'</head>\n<body>\n' +
+'<div style="max-width:680px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 8px 40px rgba(0,42,110,.15);">\n' +
 
-  <div style="background:#fff8e1;border-left:6px solid #ffc107;padding:16px 26px;display:flex;align-items:flex-start;gap:14px;">
-    <span style="font-size:24px;flex-shrink:0;line-height:1.3;">⚠️</span>
-    <span style="font-size:15px;font-weight:800;color:#7a5700;line-height:1.6;">${esc(urgent)}</span>
-  </div>
+/* 헤더 */
+'<div style="background:linear-gradient(135deg,#002a6e,#0057c2);padding:32px 36px;position:relative;overflow:hidden;">' +
+'<div style="position:absolute;top:-70px;right:-70px;width:240px;height:240px;border-radius:50%;background:rgba(255,255,255,.05);pointer-events:none;"></div>' +
+'<div style="display:inline-block;background:#ff3333;color:#fff;font-size:11px;font-weight:800;letter-spacing:1px;padding:4px 14px;border-radius:6px;margin-bottom:14px;">🚢 블럭이동 공식 공지</div>' +
+'<div style="color:#fff;font-size:22px;font-weight:800;line-height:1.45;">[동커버] SN' + esc(sn) + ' 블럭 이동 요청<br><span style="color:#7ec8ff;font-size:26px;">' + esc(from) + ' → ' + esc(to) + '</span></div>' +
+'<div style="color:rgba(255,255,255,.65);font-size:13px;margin-top:10px;font-weight:700;">발신: ' + esc(sender) + '</div>' +
+'</div>' +
 
-  <!-- 핵심 정보 -->
+/* 긴급 배너 */
+'<div style="background:#fff8e1;border-left:6px solid #ffc107;padding:16px 26px;display:flex;align-items:flex-start;gap:14px;">' +
+'<span style="font-size:24px;flex-shrink:0;line-height:1.3;">⚠️</span>' +
+'<span style="font-size:15px;font-weight:800;color:#7a5700;line-height:1.6;">' + esc(urgent) + '</span>' +
+'</div>' +
 
-  <div style="padding:26px 32px;border-bottom:1px solid #eef0f3;">
-    <div style="font-size:11px;font-weight:800;color:#aaa;letter-spacing:1.5px;margin-bottom:16px;">📋 핵심 정보</div>
-    <table style="width:100%;border-collapse:separate;border-spacing:10px;margin:-10px;">
-      <tr>
-        <td style="background:#e8f0fe;border-radius:12px;padding:18px 20px;border:1px solid #b3c8fa;width:50%;">
-          <div style="font-size:11px;color:#7a8599;font-weight:800;margin-bottom:6px;">선번 / TK</div>
-          <div style="font-size:22px;font-weight:800;color:#002a6e;">SN${esc(sn)} · ${esc(tk)}</div>
-        </td>
-        <td style="background:#fff5f5;border-radius:12px;padding:18px 20px;border:1px solid #ffcccc;width:50%;">
-          <div style="font-size:11px;color:#7a8599;font-weight:800;margin-bottom:6px;">P/T 탑재 마감</div>
-          <div style="font-size:22px;font-weight:800;color:#c0392b;">${esc(deadline)}</div>
-        </td>
-      </tr>
-      <tr>
-        <td style="background:#f7f9fc;border-radius:12px;padding:18px 20px;border:1px solid #e4e8ee;">
-          <div style="font-size:11px;color:#7a8599;font-weight:800;margin-bottom:6px;">블럭 이동일</div>
-          <div style="font-size:22px;font-weight:800;color:#002a6e;">${esc(moveDate)}</div>
-        </td>
-        <td style="background:#f7f9fc;border-radius:12px;padding:18px 20px;border:1px solid #e4e8ee;">
-          <div style="font-size:11px;color:#7a8599;font-weight:800;margin-bottom:6px;">이동 시간대</div>
-          <div style="font-size:22px;font-weight:800;color:#002a6e;">${esc(moveTime)}</div>
-        </td>
-      </tr>
-    </table>
-  </div>
+/* 핵심 정보 */
+'<div style="padding:26px 32px;border-bottom:1px solid #eef0f3;">' +
+'<div style="font-size:11px;font-weight:800;color:#aaa;letter-spacing:1.5px;margin-bottom:16px;">📋 핵심 정보</div>' +
+'<table style="width:100%;border-collapse:separate;border-spacing:10px;margin:-10px;">' +
+'<tr>' +
+'<td style="background:#e8f0fe;border-radius:12px;padding:18px 20px;border:1px solid #b3c8fa;width:50%;"><div style="font-size:11px;color:#7a8599;font-weight:800;margin-bottom:6px;">선번 / TK</div><div style="font-size:22px;font-weight:800;color:#002a6e;">SN' + esc(sn) + ' · ' + esc(tk) + '</div></td>' +
+'<td style="background:#fff5f5;border-radius:12px;padding:18px 20px;border:1px solid #ffcccc;width:50%;"><div style="font-size:11px;color:#7a8599;font-weight:800;margin-bottom:6px;">P/T 탑재 마감</div><div style="font-size:22px;font-weight:800;color:#c0392b;">' + esc(deadline) + '</div></td>' +
+'</tr><tr>' +
+'<td style="background:#f7f9fc;border-radius:12px;padding:18px 20px;border:1px solid #e4e8ee;"><div style="font-size:11px;color:#7a8599;font-weight:800;margin-bottom:6px;">블럭 이동일</div><div style="font-size:22px;font-weight:800;color:#002a6e;">' + esc(moveDate) + '</div></td>' +
+'<td style="background:#f7f9fc;border-radius:12px;padding:18px 20px;border:1px solid #e4e8ee;"><div style="font-size:11px;color:#7a8599;font-weight:800;margin-bottom:6px;">이동 시간대</div><div style="font-size:22px;font-weight:800;color:#002a6e;">' + esc(moveTime) + '</div></td>' +
+'</tr></table></div>' +
 
-  <!-- 이동 경로 -->
+/* 이동 경로 */
+'<div style="padding:26px 32px;border-bottom:1px solid #eef0f3;">' +
+'<div style="font-size:11px;font-weight:800;color:#aaa;letter-spacing:1.5px;margin-bottom:16px;">🔀 블럭 이동 경로</div>' +
+'<div style="background:#f7f9fc;border-radius:14px;padding:24px;display:flex;align-items:center;justify-content:center;gap:24px;border:1px solid #e4e8ee;">' +
+'<div style="text-align:center;"><div style="font-size:12px;color:#999;font-weight:800;margin-bottom:8px;">출발 (현재 위치)</div><div style="font-size:40px;font-weight:800;color:#c0392b;line-height:1;">' + (esc(from)||'—') + '</div></div>' +
+'<div style="font-size:40px;font-weight:800;color:#002a6e;line-height:1;padding-top:20px;">→</div>' +
+'<div style="text-align:center;"><div style="font-size:12px;color:#999;font-weight:800;margin-bottom:8px;">도착 (목적 위치)</div><div style="font-size:40px;font-weight:800;color:#1a7a4a;line-height:1;">' + (esc(to)||'—') + '</div></div>' +
+'</div>' + extraHtml + '</div>' +
 
-  <div style="padding:26px 32px;border-bottom:1px solid #eef0f3;">
-    <div style="font-size:11px;font-weight:800;color:#aaa;letter-spacing:1.5px;margin-bottom:16px;">🔀 블럭 이동 경로</div>
-    <div style="background:#f7f9fc;border-radius:14px;padding:24px;display:flex;align-items:center;justify-content:center;gap:24px;border:1px solid #e4e8ee;">
-      <div style="text-align:center;">
-        <div style="font-size:12px;color:#999;font-weight:800;margin-bottom:8px;letter-spacing:0.5px;">출발 (현재 위치)</div>
-        <div style="font-size:40px;font-weight:800;color:#c0392b;line-height:1;">${esc(from)||'—'}</div>
-      </div>
-      <div style="font-size:40px;font-weight:800;color:#002a6e;line-height:1;padding-top:20px;">→</div>
-      <div style="text-align:center;">
-        <div style="font-size:12px;color:#999;font-weight:800;margin-bottom:8px;letter-spacing:0.5px;">도착 (목적 위치)</div>
-        <div style="font-size:40px;font-weight:800;color:#1a7a4a;line-height:1;">${esc(to)||'—'}</div>
-      </div>
-    </div>
-    ${extra ? `<div style="font-size:13px;font-weight:800;color:#666;text-align:center;margin-top:12px;">※ ${esc(extra)}</div>` : ''}
-  </div>
+schedSection +
+actSection +
 
-${scheduleRows.length > 0 ? `
+/* 푸터 */
+'<div style="background:#f4f7fc;padding:18px 32px;text-align:center;font-size:13px;font-weight:800;color:#888;border-top:1px solid #eef0f3;">' +
+'문의: ' + esc(sender) + ' | 본 메일은 공식 블럭이동 공지입니다.' +
+'</div>' +
+'</div>\n</body>\n</html>';
+```
 
-  <!-- 작업 일정 -->
-
-  <div style="padding:26px 32px;border-bottom:1px solid #eef0f3;">
-    <div style="font-size:11px;font-weight:800;color:#aaa;letter-spacing:1.5px;margin-bottom:16px;">📅 작업 일정</div>
-    <table style="width:100%;border-collapse:collapse;border-radius:12px;overflow:hidden;">
-      <thead>
-        <tr style="background:#002a6e;">
-          <th style="padding:14px 18px;text-align:center;font-size:14px;font-weight:800;color:#fff;white-space:nowrap;">일자</th>
-          <th style="padding:14px 18px;text-align:center;font-size:14px;font-weight:800;color:#fff;">작업 내용</th>
-          <th style="padding:14px 18px;text-align:center;font-size:14px;font-weight:800;color:#fff;">비고</th>
-          <th style="padding:14px 18px;text-align:center;font-size:14px;font-weight:800;color:#fff;white-space:nowrap;">상태</th>
-        </tr>
-      </thead>
-      <tbody>${schedHTML}</tbody>
-    </table>
-  </div>` : ''}
-
-${actHTML ? `
-
-  <!-- 요청사항 -->
-
-  <div style="padding:26px 32px;border-bottom:1px solid #eef0f3;">
-    <div style="font-size:11px;font-weight:800;color:#aaa;letter-spacing:1.5px;margin-bottom:16px;">✅ 담당자 조치 요청사항</div>
-    <div style="background:#fff5f5;border:2px solid #ffcccc;border-radius:14px;padding:20px 22px;">
-      <div style="font-size:15px;font-weight:800;color:#c0392b;margin-bottom:14px;">🔴 아래 사항을 반드시 확인해 주세요</div>
-      <table style="width:100%;border-collapse:collapse;">${actHTML}</table>
-    </div>
-  </div>` : ''}
-
-  <!-- 푸터 -->
-
-  <div style="background:#f4f7fc;padding:18px 32px;text-align:center;font-size:13px;font-weight:800;color:#888;border-top:1px solid #eef0f3;">
-    문의: ${esc(sender)} | 본 메일은 공식 블럭이동 공지입니다.
-  </div>
-
-</div>
-</body>
-</html>`;
 }
 
-/* 미리보기 iframe */
+/* ── 미리보기 iframe ── */
 function renderPreviewIframe() {
-const html = buildEmailHTML();
-const iframe = document.getElementById(‘preview-iframe’);
-const doc = iframe.contentDocument || iframe.contentWindow.document;
+var html   = buildEmailHTML();
+var iframe = document.getElementById(‘preview-iframe’);
+var doc    = iframe.contentDocument || iframe.contentWindow.document;
 doc.open(); doc.write(html); doc.close();
-
-setTimeout(() => {
-const wrap = document.querySelector(’.preview-scaler-wrap’);
-const wrapW = wrap.clientWidth;
-const emailW = 720; // body padding 포함
-const scale = Math.min(1, wrapW / emailW);
-const scrollH = doc.documentElement.scrollHeight || doc.body.scrollHeight;
-iframe.style.width = (wrapW / scale) + ‘px’;
-iframe.style.height = (scrollH + 40) + ‘px’;
-iframe.style.transform = `scale(${scale})`;
+setTimeout(function() {
+var wrap  = document.querySelector(’.preview-scaler-wrap’);
+var wrapW = wrap.clientWidth;
+var emailW = 720;
+var scale  = Math.min(1, wrapW / emailW);
+var scrollH = doc.documentElement.scrollHeight || doc.body.scrollHeight;
+iframe.style.width         = (wrapW / scale) + ‘px’;
+iframe.style.height        = (scrollH + 40) + ‘px’;
+iframe.style.transform     = ‘scale(’ + scale + ‘)’;
 iframe.style.transformOrigin = ‘top left’;
-wrap.style.height = ((scrollH + 40) * scale) + ‘px’;
+wrap.style.height          = ((scrollH + 40) * scale) + ‘px’;
 }, 300);
 }
 
-/* HTML 복사 */
+/* ── HTML 복사 ── */
 function copyHTML() {
-navigator.clipboard.writeText(buildEmailHTML()).then(() => {
+var html = buildEmailHTML();
+navigator.clipboard.writeText(html).then(function() {
 showToast(‘📋 메일 HTML 복사 완료!’);
-[‘copy-btn’,‘copy-btn2’].forEach(id => {
-const b = document.getElementById(id);
+[‘copy-btn’,‘copy-btn2’].forEach(function(id) {
+var b = document.getElementById(id);
 if (!b) return;
 b.classList.add(‘copied’); b.textContent = ‘✅ 복사 완료!’;
-setTimeout(() => { b.classList.remove(‘copied’); b.textContent = ‘📋 메일 HTML 복사’; }, 2000);
+setTimeout(function(){ b.classList.remove(‘copied’); b.textContent = ‘📋 메일 HTML 복사’; }, 2000);
 });
-}).catch(() => showToast(‘⚠️ 복사 실패. 브라우저 권한을 확인해주세요.’));
+}).catch(function() { showToast(‘⚠️ 복사 실패. 브라우저 권한을 확인해주세요.’); });
 }
 
-/* 저장/불러오기 */
-function getHistory() { try { return JSON.parse(localStorage.getItem(‘bmHist’)||’[]’); } catch { return []; } }
+/* ── 저장/불러오기 ── */
+function getHistory() {
+try { return JSON.parse(localStorage.getItem(‘bmHist’) || ‘[]’); } catch(e) { return []; }
+}
 function saveToHistory() {
-const data = {
+var data = {
 id: Date.now(), savedAt: new Date().toLocaleDateString(‘ko-KR’),
-sn: document.getElementById(‘sn’).value, tk: document.getElementById(‘tk’).value,
-sender: document.getElementById(‘sender’).value, urgent: document.getElementById(‘urgent’).value,
-from: document.getElementById(‘from’).value, to: document.getElementById(‘to’).value,
-moveDate: document.getElementById(‘moveDate’).value, moveTime: document.getElementById(‘moveTime’).value,
-deadline: document.getElementById(‘deadline’).value, extraNote: document.getElementById(‘extraNote’).value,
+sn:        document.getElementById(‘sn’).value,
+tk:        document.getElementById(‘tk’).value,
+sender:    document.getElementById(‘sender’).value,
+urgent:    document.getElementById(‘urgent’).value,
+from:      document.getElementById(‘from’).value,
+to:        document.getElementById(‘to’).value,
+moveDate:  document.getElementById(‘moveDate’).value,
+moveTime:  document.getElementById(‘moveTime’).value,
+deadline:  document.getElementById(‘deadline’).value,
+extraNote: document.getElementById(‘extraNote’).value,
 scheduleRows: JSON.parse(JSON.stringify(scheduleRows)),
-actionItems:  JSON.parse(JSON.stringify(actionItems)),
+actionItems:  JSON.parse(JSON.stringify(actionItems))
 };
-const h = getHistory(); h.unshift(data);
-localStorage.setItem(‘bmHist’, JSON.stringify(h.slice(0,30)));
+var h = getHistory(); h.unshift(data);
+localStorage.setItem(‘bmHist’, JSON.stringify(h.slice(0, 30)));
 showToast(‘💾 저장 완료!’);
 }
 function loadFromHistory(id) {
-const data = getHistory().find(h=>h.id===id); if (!data) return;
-[‘sn’,‘tk’,‘sender’,‘urgent’,‘from’,‘to’,‘moveDate’,‘deadline’,‘extraNote’].forEach(k => {
-document.getElementById(k).value = data[k]||’’;
+var data = getHistory().find(function(h){ return h.id === id; });
+if (!data) return;
+[‘sn’,‘tk’,‘sender’,‘urgent’,‘from’,‘to’,‘moveDate’,‘deadline’,‘extraNote’].forEach(function(k){
+document.getElementById(k).value = data[k] || ‘’;
 });
-document.getElementById(‘moveTime’).value = data.moveTime||‘야간’;
-scheduleRows = data.scheduleRows||[]; actionItems = data.actionItems||[];
-schedId = scheduleRows.length ? Math.max(…scheduleRows.map(r=>r.id))+1 : 0;
-actId   = actionItems.length  ? Math.max(…actionItems.map(a=>a.id))+1 : 0;
-renderScheduleList(); renderActionList();
-switchTab(‘form’); showToast(‘✅ 불러오기 완료!’);
+document.getElementById(‘moveTime’).value = data.moveTime || ‘야간’;
+scheduleRows = data.scheduleRows || [];
+actionItems  = data.actionItems  || [];
+schedId = scheduleRows.length ? Math.max.apply(null, scheduleRows.map(function(r){return r.id;})) + 1 : 0;
+actId   = actionItems.length  ? Math.max.apply(null, actionItems.map(function(a){return a.id;}))  + 1 : 0;
+renderScheduleList();
+renderActionList();
+switchTab(‘form’);
+showToast(‘✅ 불러오기 완료!’);
 }
 function deleteHistory(id) {
-localStorage.setItem(‘bmHist’, JSON.stringify(getHistory().filter(h=>h.id!==id)));
-renderHistory(); showToast(‘🗑 삭제 완료’);
+localStorage.setItem(‘bmHist’, JSON.stringify(getHistory().filter(function(h){ return h.id !== id; })));
+renderHistory();
+showToast(‘🗑 삭제 완료’);
 }
 function renderHistory() {
-const h = getHistory();
-const el = document.getElementById(‘history-container’);
+var h  = getHistory();
+var el = document.getElementById(‘history-container’);
 if (!h.length) {
-el.innerHTML = `<div class="history-empty"><div class="icon">📭</div><p>저장된 공지가 없습니다.<br>작성 후 저장 버튼을 눌러주세요.</p></div>`;
+el.innerHTML = ‘<div class="history-empty"><div class="icon">📭</div><p>저장된 공지가 없습니다.<br>작성 후 저장 버튼을 눌러주세요.</p></div>’;
 return;
 }
-el.innerHTML = `<div style="font-size:13px;font-weight:800;color:var(--muted);margin-bottom:12px;">총 ${h.length}개 저장됨</div>
-
-  <div class="history-list">${h.map(d=>`
-    <div class="history-card" onclick="loadFromHistory(${d.id})">
-      <button class="hc-del" onclick="event.stopPropagation();deleteHistory(${d.id})">✕</button>
-      <div class="hc-sn">SN${esc(d.sn)} · ${esc(d.tk)}</div>
-      <div class="hc-route">${esc(d.from)} → ${esc(d.to)}</div>
-      <div class="hc-meta">📅 이동일: ${esc(d.moveDate)}<br>⏰ 마감: ${esc(d.deadline)}<br>🕐 저장: ${d.savedAt}</div>
-    </div>`).join('')}
-  </div>`;
+var html = ’<div style="font-size:13px;font-weight:800;color:var(--muted);margin-bottom:12px;">총 ’ + h.length + ‘개 저장됨</div><div class="history-list">’;
+h.forEach(function(d) {
+html += ‘<div class="history-card" onclick="loadFromHistory(' + d.id + ')">’ +
+‘<button class="hc-del" onclick="event.stopPropagation();deleteHistory(' + d.id + ')">✕</button>’ +
+‘<div class="hc-sn">SN’ + safeVal(d.sn) + ’ · ’ + safeVal(d.tk) + ‘</div>’ +
+‘<div class="hc-route">’ + safeVal(d.from) + ’ → ’ + safeVal(d.to) + ‘</div>’ +
+’<div class="hc-meta">📅 이동일: ’ + safeVal(d.moveDate) + ’<br>⏰ 마감: ’ + safeVal(d.deadline) + ’<br>🕐 저장: ’ + d.savedAt + ‘</div>’ +
+‘</div>’;
+});
+el.innerHTML = html + ‘</div>’;
 }
 
-/* Toast */
+/* ── Toast ── */
 function showToast(msg) {
-const t = document.getElementById(‘toast’);
+var t = document.getElementById(‘toast’);
 t.textContent = msg; t.classList.add(‘show’);
-setTimeout(() => t.classList.remove(‘show’), 2600);
+setTimeout(function(){ t.classList.remove(‘show’); }, 2600);
 }
 </script>
 
