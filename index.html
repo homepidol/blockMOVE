@@ -3,7 +3,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>블럭이동 공지 생성기</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap');
@@ -13,989 +13,612 @@
 –blue: #0057c2;
 –red: #c0392b;
 –green: #1a7a4a;
-–yellow: #f39c12;
-–bg: #eef1f6;
-–card: #fff;
-–border: #dde2ea;
+–bg: #f0f3f8;
+–card: #ffffff;
+–border: #dde3ed;
 –text: #1a1a2e;
 –muted: #7a8599;
+–input-h: 48px;
+–radius: 12px;
 }
 
-- { margin: 0; padding: 0; box-sizing: border-box; }
+- { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
 body {
 font-family: ‘Nanum Gothic’, ‘Apple SD Gothic Neo’, sans-serif;
 background: var(–bg);
 color: var(–text);
 min-height: 100vh;
+font-size: 15px;
 }
 
-/* ── APP SHELL ── */
+/* ══ 헤더 ══ */
 .app-header {
 background: linear-gradient(135deg, var(–navy) 0%, var(–blue) 100%);
-padding: 18px 32px;
-display: flex;
-align-items: center;
-justify-content: space-between;
-box-shadow: 0 2px 12px rgba(0,42,110,0.3);
+padding: 14px 20px 12px;
 position: sticky;
 top: 0;
-z-index: 100;
+z-index: 200;
+box-shadow: 0 2px 12px rgba(0,42,110,0.35);
 }
-.app-header .logo {
-color: #fff;
-font-size: 16px;
-font-weight: 900;
-letter-spacing: -0.3px;
-}
-.app-header .logo span { color: #7ec8ff; }
-.app-header .subtitle { color: rgba(255,255,255,0.6); font-size: 11px; margin-top: 2px; }
+.header-inner { display: flex; align-items: center; gap: 10px; }
+.header-icon { font-size: 22px; }
+.header-title { color: #fff; font-size: 17px; font-weight: 800; }
+.header-title span { color: #7ec8ff; }
+.header-sub { color: rgba(255,255,255,0.55); font-size: 11px; margin-top: 1px; }
 
+/* ══ 탭바 ══ */
 .tab-bar {
 display: flex;
 background: var(–navy);
-padding: 0 32px;
-border-bottom: 1px solid rgba(255,255,255,0.1);
+border-bottom: 1px solid rgba(255,255,255,0.12);
 }
 .tab-btn {
-padding: 10px 20px;
-color: rgba(255,255,255,0.55);
-font-size: 13px;
-font-weight: 600;
-cursor: pointer;
+flex: 1;
+padding: 12px 0;
+color: rgba(255,255,255,0.5);
+font-size: 14px;
+font-weight: 800;
+font-family: inherit;
 border: none;
 background: none;
 border-bottom: 3px solid transparent;
+cursor: pointer;
 transition: all 0.2s;
-font-family: inherit;
 }
-.tab-btn.active {
-color: #fff;
-border-bottom-color: #7ec8ff;
-}
+.tab-btn.active { color: #fff; border-bottom-color: #7ec8ff; }
 
-.layout {
-display: grid;
-grid-template-columns: 420px 1fr;
-gap: 0;
-min-height: calc(100vh - 95px);
-}
+/* ══ 탭 컨텐츠 ══ */
+.tab-content { display: none; }
+.tab-content.active { display: block; }
 
-/* ── 입력 패널 ── */
-.input-panel {
+/* ══ 입력 폼 ══ */
+.form-wrap { padding: 16px; display: flex; flex-direction: column; gap: 14px; padding-bottom: 100px; }
+
+.section-card {
 background: var(–card);
-border-right: 1px solid var(–border);
-overflow-y: auto;
-height: calc(100vh - 95px);
-position: sticky;
-top: 95px;
+border-radius: var(–radius);
+overflow: hidden;
+box-shadow: 0 1px 6px rgba(0,42,110,0.07);
 }
-
-.panel-section {
-padding: 20px 24px;
-border-bottom: 1px solid var(–border);
-}
-.panel-section:last-child { border-bottom: none; }
-
-.section-label {
-font-size: 10px;
+.section-head {
+background: #f4f7fc;
+padding: 11px 16px;
+font-size: 12px;
 font-weight: 800;
-color: var(–muted);
-letter-spacing: 1.5px;
-text-transform: uppercase;
-margin-bottom: 14px;
+color: var(–navy);
+letter-spacing: 0.5px;
+border-bottom: 1px solid var(–border);
 display: flex;
 align-items: center;
 gap: 6px;
 }
-.section-label::after {
-content: ‘’;
-flex: 1;
-height: 1px;
-background: var(–border);
-}
+.section-body { padding: 14px 16px; display: flex; flex-direction: column; gap: 12px; }
 
-.form-row { margin-bottom: 12px; }
-.form-row label {
-display: block;
-font-size: 11px;
-font-weight: 700;
-color: var(–muted);
-margin-bottom: 4px;
-}
-.form-row input, .form-row select, .form-row textarea {
-width: 100%;
-padding: 9px 12px;
+/* ══ 폼 필드 ══ */
+.field { display: flex; flex-direction: column; gap: 5px; }
+.field label { font-size: 12px; font-weight: 800; color: var(–muted); }
+.field input, .field select, .field textarea {
+height: var(–input-h);
+padding: 0 14px;
 border: 1.5px solid var(–border);
-border-radius: 8px;
-font-size: 13px;
+border-radius: 10px;
+font-size: 15px;
 font-family: inherit;
 color: var(–text);
 background: #fafbfd;
-transition: border-color 0.2s, box-shadow 0.2s;
 outline: none;
+-webkit-appearance: none;
+transition: border-color 0.2s, box-shadow 0.2s;
 }
-.form-row input:focus, .form-row select:focus, .form-row textarea:focus {
+.field select {
+background-image: url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘12’ height=‘8’ viewBox=‘0 0 12 8’%3E%3Cpath d=‘M1 1l5 5 5-5’ stroke=’%237a8599’ stroke-width=‘1.5’ fill=‘none’ stroke-linecap=‘round’/%3E%3C/svg%3E”);
+background-repeat: no-repeat;
+background-position: right 14px center;
+padding-right: 36px;
+}
+.field textarea { height: auto; min-height: 76px; padding: 12px 14px; resize: none; line-height: 1.6; }
+.field input:focus, .field select:focus, .field textarea:focus {
 border-color: var(–blue);
 box-shadow: 0 0 0 3px rgba(0,87,194,0.1);
 background: #fff;
 }
-.form-row textarea { resize: vertical; min-height: 60px; }
+.field input::placeholder, .field textarea::placeholder { color: #bec5d0; }
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
-.form-grid {
-display: grid;
-grid-template-columns: 1fr 1fr;
-gap: 10px;
-}
-
-/* 일정 행 */
-.schedule-rows { display: flex; flex-direction: column; gap: 8px; }
-.schedule-row {
-background: #f7f9fc;
+/* ══ 일정 행 ══ */
+.schedule-list { display: flex; flex-direction: column; gap: 8px; }
+.sched-item {
+background: #f6f8fc;
 border: 1px solid var(–border);
-border-radius: 8px;
-padding: 10px 12px;
-position: relative;
+border-radius: 10px;
+padding: 12px 12px 10px;
 }
-.schedule-row-grid {
-display: grid;
-grid-template-columns: 1fr 1.5fr 1fr auto;
-gap: 6px;
-align-items: end;
+.sched-top { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
+.sched-bottom { display: grid; grid-template-columns: 1fr auto auto; gap: 8px; align-items: end; }
+.sched-lbl { font-size: 10px; font-weight: 800; color: var(–muted); margin-bottom: 4px; }
+.sched-input {
+height: 40px; padding: 0 10px;
+border: 1.5px solid var(–border); border-radius: 8px;
+font-size: 14px; font-family: inherit; background: #fff; outline: none; width: 100%;
+-webkit-appearance: none;
 }
-.schedule-row input, .schedule-row select {
-padding: 7px 8px;
-border: 1.5px solid var(–border);
-border-radius: 6px;
-font-size: 12px;
-font-family: inherit;
-background: #fff;
-outline: none;
-width: 100%;
+.sched-input:focus { border-color: var(–blue); }
+.sched-select {
+height: 40px; padding: 0 28px 0 10px;
+border: 1.5px solid var(–border); border-radius: 8px;
+font-size: 13px; font-family: inherit; font-weight: 800;
+background: #fff url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘10’ height=‘7’ viewBox=‘0 0 10 7’%3E%3Cpath d=‘M1 1l4 4 4-4’ stroke=’%237a8599’ stroke-width=‘1.5’ fill=‘none’ stroke-linecap=‘round’/%3E%3C/svg%3E”) no-repeat right 10px center;
+outline: none; -webkit-appearance: none; width: 100%; cursor: pointer;
 }
-.schedule-row input:focus, .schedule-row select:focus {
-border-color: var(–blue);
-}
-.schedule-row .row-label {
-font-size: 10px;
-color: var(–muted);
-font-weight: 600;
-margin-bottom: 3px;
-}
-.del-btn {
-background: #fff0f0;
-border: 1px solid #ffcccc;
-border-radius: 6px;
-color: var(–red);
-font-size: 14px;
-cursor: pointer;
-width: 30px;
-height: 30px;
-display: flex;
-align-items: center;
-justify-content: center;
-flex-shrink: 0;
-transition: background 0.15s;
-}
-.del-btn:hover { background: #ffe0e0; }
 
-.add-row-btn {
-background: #f0f6ff;
-border: 1.5px dashed #b3c8fa;
-border-radius: 8px;
-color: var(–blue);
-font-size: 12px;
-font-weight: 700;
-padding: 8px;
-cursor: pointer;
-width: 100%;
-font-family: inherit;
-transition: background 0.15s;
-}
-.add-row-btn:hover { background: #e0edff; }
-
-/* 요청사항 */
-.action-rows { display: flex; flex-direction: column; gap: 6px; }
-.action-item {
-display: flex;
-gap: 6px;
-align-items: center;
-}
+/* ══ 요청사항 ══ */
+.action-list { display: flex; flex-direction: column; gap: 8px; }
+.action-item { display: flex; gap: 8px; align-items: center; }
 .action-item input {
-flex: 1;
-padding: 8px 10px;
-border: 1.5px solid var(–border);
-border-radius: 6px;
-font-size: 12px;
-font-family: inherit;
-outline: none;
-background: #fafbfd;
+flex: 1; height: 44px; padding: 0 12px;
+border: 1.5px solid var(–border); border-radius: 8px;
+font-size: 14px; font-family: inherit; background: #fff; outline: none; -webkit-appearance: none;
 }
 .action-item input:focus { border-color: var(–blue); }
 
-/* 버튼 */
-.btn-primary {
-background: linear-gradient(135deg, var(–navy), var(–blue));
-color: #fff;
-border: none;
-border-radius: 10px;
-padding: 13px 24px;
-font-size: 14px;
-font-weight: 700;
-cursor: pointer;
-width: 100%;
-font-family: inherit;
-transition: opacity 0.2s, transform 0.1s;
-display: flex;
-align-items: center;
-justify-content: center;
-gap: 8px;
+.del-btn {
+width: 36px; height: 36px; flex-shrink: 0;
+background: #fff0f0; border: 1px solid #ffcccc; border-radius: 8px;
+color: var(–red); font-size: 15px; cursor: pointer;
+display: flex; align-items: center; justify-content: center;
 }
-.btn-primary:hover { opacity: 0.92; transform: translateY(-1px); }
-.btn-primary:active { transform: translateY(0); }
+.add-btn {
+height: 44px; background: #eef4ff; border: 1.5px dashed #b3c8fa;
+border-radius: 10px; color: var(–blue); font-size: 14px; font-weight: 800;
+font-family: inherit; cursor: pointer; width: 100%; transition: background 0.15s;
+}
+.add-btn:active { background: #ddeaff; }
 
-.btn-secondary {
-background: #fff;
-color: var(–blue);
-border: 1.5px solid var(–blue);
-border-radius: 10px;
-padding: 11px 24px;
-font-size: 13px;
-font-weight: 700;
-cursor: pointer;
-font-family: inherit;
-transition: background 0.15s;
-}
-.btn-secondary:hover { background: #f0f6ff; }
-
-.btn-row {
-display: flex;
-gap: 8px;
-padding: 16px 24px;
-background: var(–card);
-border-top: 1px solid var(–border);
-position: sticky;
-bottom: 0;
-}
-
-/* ── 미리보기 패널 ── */
-.preview-panel {
-background: #e8ecf3;
-overflow-y: auto;
-padding: 32px;
-}
-
-.preview-toolbar {
-display: flex;
-align-items: center;
-justify-content: space-between;
-margin-bottom: 20px;
-}
-.preview-toolbar .pt-title {
-font-size: 13px;
-font-weight: 700;
-color: var(–muted);
-}
-.copy-btn {
-background: var(–navy);
-color: #fff;
-border: none;
-border-radius: 8px;
-padding: 8px 16px;
-font-size: 12px;
-font-weight: 700;
-cursor: pointer;
-font-family: inherit;
-display: flex;
-align-items: center;
-gap: 6px;
-transition: opacity 0.2s;
-}
-.copy-btn:hover { opacity: 0.85; }
-.copy-btn.copied { background: var(–green); }
-
-/* ── 이메일 미리보기 ── */
-#email-preview {
-max-width: 660px;
-margin: 0 auto;
-background: #fff;
-border-radius: 14px;
-overflow: hidden;
-box-shadow: 0 6px 32px rgba(0,42,110,0.14);
-}
-
-.ep-header {
-background: linear-gradient(135deg, #003087 0%, #0057c2 100%);
-padding: 28px 32px;
-position: relative;
-overflow: hidden;
-}
-.ep-header::before {
-content: ‘’;
-position: absolute;
-top: -50px; right: -50px;
-width: 200px; height: 200px;
-border-radius: 50%;
-background: rgba(255,255,255,0.05);
-}
-.ep-tag {
-display: inline-block;
-background: #ff4444;
-color: #fff;
-font-size: 10px;
-font-weight: 800;
-letter-spacing: 1px;
-padding: 3px 10px;
-border-radius: 4px;
-margin-bottom: 10px;
-}
-.ep-header h1 {
-color: #fff;
-font-size: 21px;
-font-weight: 800;
-line-height: 1.35;
-}
-.ep-header h1 span { color: #7ec8ff; }
-.ep-header-sub {
-color: rgba(255,255,255,0.65);
-font-size: 13px;
-margin-top: 6px;
-}
-
-.ep-urgent {
-background: #fff3cd;
-border-left: 5px solid #ffc107;
-padding: 12px 22px;
-display: flex;
-align-items: center;
-gap: 10px;
-font-size: 14px;
-font-weight: 800;
-color: #7a5700;
-}
-.ep-urgent span { color: #c0392b; }
-
-.ep-section {
-padding: 20px 28px;
-border-bottom: 1px solid #eef0f3;
-}
-.ep-section-title {
-font-size: 11px;
-font-weight: 800;
-color: #999;
-letter-spacing: 1.2px;
-text-transform: uppercase;
-margin-bottom: 12px;
-}
-
-.ep-info-grid {
-display: grid;
-grid-template-columns: 1fr 1fr;
-gap: 10px;
-}
-.ep-info-card {
-background: #f7f9fc;
-border-radius: 8px;
-padding: 13px 15px;
-border: 1px solid #e4e8ee;
-}
-.ep-info-card.hl { background: #e8f0fe; border-color: #b3c8fa; }
-.ep-info-card label {
-font-size: 11px;
-color: #999;
-font-weight: 800;
-display: block;
-margin-bottom: 3px;
-}
-.ep-info-card .val {
-font-size: 18px;
-font-weight: 800;
-color: #003087;
-}
-.ep-info-card .val.red { color: #c0392b; }
-
-.ep-route {
-background: #f7f9fc;
-border-radius: 10px;
-padding: 18px;
-display: flex;
-align-items: center;
-justify-content: center;
-gap: 14px;
-border: 1px solid #e4e8ee;
-}
-.ep-route-node { text-align: center; }
-.ep-route-node .nl { font-size: 11px; color: #999; margin-bottom: 3px; font-weight: 700; }
-.ep-route-node .nv { font-size: 26px; font-weight: 900; line-height: 1; }
-.ep-route-node.from .nv { color: #c0392b; }
-.ep-route-node.to .nv { color: #1a7a4a; }
-.ep-arrow { font-size: 26px; font-weight: 900; color: #003087; }
-.ep-route-note { font-size: 12px; font-weight: 700; color: #666; text-align: center; margin-top: 8px; }
-
-.ep-table { width: 100%; border-collapse: collapse; font-size: 14px; }
-.ep-table th {
-background: #003087;
-color: #fff;
-padding: 11px 13px;
-text-align: center;
-font-size: 13px;
-font-weight: 800;
-letter-spacing: 0.3px;
-}
-.ep-table td {
-padding: 11px 13px;
-border-bottom: 1px solid #eef0f3;
-text-align: center;
-vertical-align: middle;
-font-size: 14px;
-font-weight: 700;
-}
-.ep-table tr:last-child td { border-bottom: none; }
-.ep-table tr:nth-child(even) td { background: #f7f9fc; }
-
-.badge {
-display: inline-block;
-padding: 3px 10px;
-border-radius: 20px;
-font-size: 12px;
-font-weight: 800;
-}
-.badge.done { background: #d4edda; color: #1a7a4a; }
-.badge.ing  { background: #fff3cd; color: #7a5700; }
-.badge.plan { background: #e8f0fe; color: #003087; }
-
-.ep-actions {
-background: #fff5f5;
-border: 2px solid #ffcccc;
-border-radius: 10px;
-padding: 16px;
-}
-.ep-action-title {
-font-size: 14px;
-font-weight: 800;
-color: #c0392b;
-margin-bottom: 10px;
-display: flex;
-align-items: center;
-gap: 5px;
-}
-.ep-action-list { list-style: none; }
-.ep-action-list li {
-display: flex;
-align-items: flex-start;
-gap: 7px;
-font-size: 13px;
-font-weight: 700;
-color: #333;
-margin-bottom: 8px;
-line-height: 1.6;
-}
-.ep-action-list li::before {
-content: ‘▶’;
-color: #c0392b;
-font-size: 10px;
-margin-top: 4px;
-flex-shrink: 0;
-}
-
-.ep-footer {
-background: #f7f9fc;
-padding: 14px 28px;
-text-align: center;
-font-size: 12px;
-font-weight: 700;
-color: #888;
-}
-
-/* ── 히스토리 탭 ── */
-.history-panel {
-padding: 24px 32px;
-}
-.history-empty {
-text-align: center;
-padding: 80px 20px;
-color: var(–muted);
-}
-.history-empty .icon { font-size: 48px; margin-bottom: 12px; }
-.history-empty p { font-size: 14px; }
-
-.history-grid {
-display: grid;
-grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-gap: 16px;
-}
-.history-card {
-background: var(–card);
-border-radius: 12px;
-padding: 18px;
-border: 1px solid var(–border);
-cursor: pointer;
-transition: box-shadow 0.2s, transform 0.15s;
-position: relative;
-}
-.history-card:hover {
-box-shadow: 0 4px 20px rgba(0,42,110,0.12);
-transform: translateY(-2px);
-}
-.history-card .hc-sn {
-font-size: 18px;
-font-weight: 900;
-color: var(–navy);
-margin-bottom: 4px;
-}
-.history-card .hc-route {
-font-size: 12px;
-color: var(–red);
-font-weight: 700;
-margin-bottom: 8px;
-}
-.history-card .hc-meta {
-font-size: 11px;
-color: var(–muted);
-}
-.history-card .hc-del {
-position: absolute;
-top: 12px;
-right: 12px;
-background: #fff0f0;
-border: none;
-border-radius: 6px;
-color: var(–red);
-font-size: 13px;
-cursor: pointer;
-width: 26px;
-height: 26px;
-display: flex;
-align-items: center;
-justify-content: center;
-}
-
-/* ── Toast ── */
-.toast {
+/* ══ 하단 고정 버튼 ══ */
+.bottom-bar {
 position: fixed;
-bottom: 24px;
-left: 50%;
-transform: translateX(-50%) translateY(60px);
-background: #1a1a2e;
-color: #fff;
-padding: 10px 20px;
-border-radius: 8px;
-font-size: 13px;
-font-weight: 600;
-z-index: 999;
-transition: transform 0.3s ease;
-white-space: nowrap;
+bottom: 0; left: 0; right: 0;
+background: #fff;
+border-top: 1px solid var(–border);
+padding: 12px 16px;
+padding-bottom: calc(12px + env(safe-area-inset-bottom));
+display: flex;
+gap: 10px;
+z-index: 150;
+box-shadow: 0 -4px 20px rgba(0,42,110,0.1);
 }
-.toast.show { transform: translateX(-50%) translateY(0); }
+.btn-save {
+height: 50px; background: #fff; border: 2px solid var(–blue); border-radius: 12px;
+color: var(–blue); font-size: 15px; font-weight: 800; font-family: inherit;
+cursor: pointer; flex: 1; transition: background 0.15s;
+}
+.btn-save:active { background: #f0f6ff; }
+.btn-copy {
+height: 50px; background: linear-gradient(135deg, var(–navy), var(–blue));
+border: none; border-radius: 12px; color: #fff; font-size: 15px; font-weight: 800;
+font-family: inherit; cursor: pointer; flex: 2;
+display: flex; align-items: center; justify-content: center; gap: 6px;
+transition: opacity 0.15s;
+}
+.btn-copy:active { opacity: 0.85; }
+.btn-copy.copied { background: var(–green); }
 
-/* responsive */
-@media (max-width: 860px) {
-.layout { grid-template-columns: 1fr; }
-.input-panel { height: auto; position: static; }
-.preview-panel { padding: 16px; }
+/* ══ 미리보기 탭 ══ */
+.preview-wrap { padding: 16px; padding-bottom: 100px; }
+.preview-note {
+background: #e8f0fe; border-left: 4px solid var(–blue);
+border-radius: 8px; padding: 11px 14px;
+font-size: 12px; font-weight: 800; color: var(–navy);
+margin-bottom: 14px; line-height: 1.6;
 }
+.preview-scaler-wrap {
+overflow: hidden;
+border-radius: 14px;
+box-shadow: 0 4px 20px rgba(0,42,110,0.13);
+background: #eef1f6;
+}
+#preview-iframe {
+border: none;
+display: block;
+transform-origin: top left;
+}
+
+/* ══ 히스토리 ══ */
+.history-wrap { padding: 16px; padding-bottom: 80px; }
+.history-empty { text-align: center; padding: 60px 20px; color: var(–muted); }
+.history-empty .icon { font-size: 48px; margin-bottom: 10px; }
+.history-empty p { font-size: 14px; font-weight: 700; line-height: 1.6; }
+.history-list { display: flex; flex-direction: column; gap: 10px; }
+.history-card {
+background: var(–card); border-radius: var(–radius); padding: 16px;
+border: 1px solid var(–border); position: relative;
+box-shadow: 0 1px 6px rgba(0,42,110,0.06); cursor: pointer;
+transition: transform 0.1s;
+}
+.history-card:active { transform: scale(0.98); }
+.hc-sn { font-size: 18px; font-weight: 800; color: var(–navy); }
+.hc-route { font-size: 13px; font-weight: 800; color: var(–red); margin: 3px 0 6px; }
+.hc-meta { font-size: 12px; color: var(–muted); font-weight: 700; line-height: 1.8; }
+.hc-del {
+position: absolute; top: 14px; right: 14px;
+width: 30px; height: 30px; background: #fff0f0;
+border: 1px solid #ffcccc; border-radius: 8px;
+color: var(–red); font-size: 14px; cursor: pointer;
+display: flex; align-items: center; justify-content: center;
+}
+
+/* ══ Toast ══ */
+.toast {
+position: fixed; bottom: 90px; left: 50%;
+transform: translateX(-50%) translateY(40px);
+background: #1a1a2e; color: #fff;
+padding: 11px 22px; border-radius: 24px;
+font-size: 13px; font-weight: 800; z-index: 999;
+opacity: 0; transition: transform 0.3s ease, opacity 0.3s ease;
+white-space: nowrap; pointer-events: none;
+}
+.toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 </style>
 
 </head>
 <body>
 
+<!-- 헤더 -->
+
 <div class="app-header">
-  <div>
-    <div class="logo">🚢 블럭이동 <span>공지 생성기</span></div>
-    <div class="subtitle">Samsung Heavy Industries · Block Move Notification</div>
+  <div class="header-inner">
+    <span class="header-icon">🚢</span>
+    <div>
+      <div class="header-title">블럭이동 <span>공지 생성기</span></div>
+      <div class="header-sub">Samsung Heavy Industries</div>
+    </div>
   </div>
 </div>
+
+<!-- 탭바 -->
 
 <div class="tab-bar">
-  <button class="tab-btn active" onclick="switchTab('editor')">✏️ 공지 작성</button>
-  <button class="tab-btn" onclick="switchTab('history')">📁 저장 목록</button>
+  <button class="tab-btn active" onclick="switchTab('form')">✏️ 작성</button>
+  <button class="tab-btn" onclick="switchTab('preview')">👁 미리보기</button>
+  <button class="tab-btn" onclick="switchTab('history')">📁 저장</button>
 </div>
 
-<!-- ══ EDITOR TAB ══ -->
+<!-- ══ 작성 탭 ══ -->
 
-<div id="tab-editor" class="layout">
+<div id="tab-form" class="tab-content active">
+<div class="form-wrap">
 
-  <!-- 입력 패널 -->
-
-  <div class="input-panel">
-
-```
-<div class="panel-section">
-  <div class="section-label">📋 기본 정보</div>
-  <div class="form-grid">
-    <div class="form-row">
-      <label>선번 (SN)</label>
-      <input id="sn" type="text" placeholder="예: 2665" oninput="renderPreview()">
-    </div>
-    <div class="form-row">
-      <label>TK 구분</label>
-      <input id="tk" type="text" placeholder="예: 3,4TK" oninput="renderPreview()">
+  <div class="section-card">
+    <div class="section-head">📋 기본 정보</div>
+    <div class="section-body">
+      <div class="row2">
+        <div class="field"><label>선번 (SN)</label><input id="sn" type="text" inputmode="numeric" placeholder="예: 2665"></div>
+        <div class="field"><label>TK 구분</label><input id="tk" type="text" placeholder="예: 3,4TK"></div>
+      </div>
+      <div class="field"><label>발신자 (부서/이름)</label><input id="sender" type="text" placeholder="예: LNG선공사1부설치1과 · 박철성"></div>
+      <div class="field">
+        <label>긴급 안내 문구</label>
+        <textarea id="urgent" placeholder="예: P/T 탑재 이벤트 준수를 위해 반드시 일정을 확인하고 조치하여 주시기 바랍니다."></textarea>
+      </div>
     </div>
   </div>
-  <div class="form-row">
-    <label>발신자 (부서/이름)</label>
-    <input id="sender" type="text" placeholder="예: LNG선공사1부설치1과 · 박철성" oninput="renderPreview()">
-  </div>
-  <div class="form-row">
-    <label>긴급 안내 문구</label>
-    <input id="urgent" type="text" placeholder="예: P/T 탑재 이벤트 준수를 위해 반드시 확인해주세요." oninput="renderPreview()">
-  </div>
-</div>
 
-<div class="panel-section">
-  <div class="section-label">🔀 이동 정보</div>
-  <div class="form-grid">
-    <div class="form-row">
-      <label>출발 위치 (FROM)</label>
-      <input id="from" type="text" placeholder="예: VB02" oninput="renderPreview()">
-    </div>
-    <div class="form-row">
-      <label>도착 위치 (TO)</label>
-      <input id="to" type="text" placeholder="예: UE10" oninput="renderPreview()">
-    </div>
-    <div class="form-row">
-      <label>이동 일자</label>
-      <input id="moveDate" type="text" placeholder="예: 2026.4.30(목)" oninput="renderPreview()">
-    </div>
-    <div class="form-row">
-      <label>이동 시간대</label>
-      <select id="moveTime" onchange="renderPreview()">
-        <option value="야간">야간</option>
-        <option value="주간">주간</option>
-        <option value="오전">오전</option>
-        <option value="오후">오후</option>
-        <option value="전일">전일</option>
-      </select>
+  <div class="section-card">
+    <div class="section-head">🔀 이동 정보</div>
+    <div class="section-body">
+      <div class="row2">
+        <div class="field"><label>출발 위치 (FROM)</label><input id="from" type="text" placeholder="예: VB02"></div>
+        <div class="field"><label>도착 위치 (TO)</label><input id="to" type="text" placeholder="예: UE10"></div>
+      </div>
+      <div class="row2">
+        <div class="field"><label>이동 일자</label><input id="moveDate" type="text" placeholder="2026.4.30(목)"></div>
+        <div class="field">
+          <label>이동 시간대</label>
+          <select id="moveTime">
+            <option value="야간">야간</option>
+            <option value="주간">주간</option>
+            <option value="오전">오전</option>
+            <option value="오후">오후</option>
+            <option value="전일">전일</option>
+          </select>
+        </div>
+      </div>
+      <div class="field"><label>P/T 탑재 일정</label><input id="deadline" type="text" placeholder="예: 2026.5.9"></div>
+      <div class="field">
+        <label>추가 이동 안내 <span style="font-weight:400;color:#bbb;">(선택)</span></label>
+        <input id="extraNote" type="text" placeholder="예: 2686호선 블럭은 우선 텐트 적치장으로 이동">
+      </div>
     </div>
   </div>
-  <div class="form-row">
-    <label>P/T 탑재 마감일</label>
-    <input id="deadline" type="text" placeholder="예: 2026.5.9" oninput="renderPreview()">
-  </div>
-  <div class="form-row">
-    <label>추가 이동 안내 (선택)</label>
-    <input id="extraNote" type="text" placeholder="예: 2686호선 블럭은 우선 텐트 적치장으로 이동" oninput="renderPreview()">
-  </div>
-</div>
 
-<div class="panel-section">
-  <div class="section-label">📅 작업 일정</div>
-  <div class="schedule-rows" id="schedule-rows"></div>
-  <button class="add-row-btn" onclick="addScheduleRow()">＋ 일정 행 추가</button>
-</div>
-
-<div class="panel-section">
-  <div class="section-label">✅ 요청 사항</div>
-  <div class="action-rows" id="action-rows"></div>
-  <button class="add-row-btn" onclick="addActionRow()">＋ 요청사항 추가</button>
-</div>
-
-<div class="btn-row">
-  <button class="btn-secondary" onclick="saveToHistory()">💾 저장</button>
-  <button class="btn-primary" onclick="copyEmailHTML()">
-    <span>📋</span> 메일 HTML 복사
-  </button>
-</div>
-```
-
-  </div>
-
-  <!-- 미리보기 패널 -->
-
-  <div class="preview-panel">
-    <div class="preview-toolbar">
-      <div class="pt-title">👁 실시간 미리보기</div>
-      <button class="copy-btn" id="copy-btn-top" onclick="copyEmailHTML()">📋 HTML 복사</button>
+  <div class="section-card">
+    <div class="section-head">📅 작업 일정</div>
+    <div class="section-body">
+      <div class="schedule-list" id="schedule-list"></div>
+      <button class="add-btn" onclick="addScheduleRow()">＋ 일정 추가</button>
     </div>
-    <div id="email-preview">
-      <!-- 미리보기 렌더링 -->
+  </div>
+
+  <div class="section-card">
+    <div class="section-head">✅ 담당자 요청사항</div>
+    <div class="section-body">
+      <div class="action-list" id="action-list"></div>
+      <button class="add-btn" onclick="addActionRow()">＋ 요청사항 추가</button>
     </div>
   </div>
 
 </div>
+<div class="bottom-bar">
+  <button class="btn-save" onclick="saveToHistory()">💾 저장</button>
+  <button class="btn-copy" id="copy-btn" onclick="copyHTML()">📋 메일 HTML 복사</button>
+</div>
+</div>
 
-<!-- ══ HISTORY TAB ══ -->
+<!-- ══ 미리보기 탭 ══ -->
 
-<div id="tab-history" style="display:none;">
-  <div class="history-panel">
-    <div id="history-container"></div>
+<div id="tab-preview" class="tab-content">
+<div class="preview-wrap">
+  <div class="preview-note">📌 PC 메일 화면 기준으로 제작된 미리보기입니다.<br>실제 메일은 PC에서 정상 크기로 표시됩니다.</div>
+  <div class="preview-scaler-wrap">
+    <iframe id="preview-iframe" scrolling="no"></iframe>
   </div>
+</div>
+<div class="bottom-bar">
+  <button class="btn-save" onclick="saveToHistory()">💾 저장</button>
+  <button class="btn-copy" id="copy-btn2" onclick="copyHTML()">📋 메일 HTML 복사</button>
+</div>
+</div>
+
+<!-- ══ 저장 탭 ══ -->
+
+<div id="tab-history" class="tab-content">
+<div class="history-wrap">
+  <div id="history-container"></div>
+</div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-// ── 상태 ──
-let scheduleRows = [];
-let actionItems = [];
-let scheduleId = 0;
-let actionId = 0;
+let scheduleRows = [], actionItems = [];
+let schedId = 0, actId = 0;
 
-// ── 초기화 ──
+/* 초기화 */
 window.onload = () => {
-  addScheduleRow('5/2 (토)', 'L/D COVER 패시베이션', '천우테크', 'done');
-  addScheduleRow('5/4 (월)', 'L/D COVER 패시베이션 검사', '오전 09:00', 'ing');
-  addScheduleRow('5/6 (수)', '보온검사 & TORQUE 검사', '오전 검사 후 TACK WD', 'plan');
+  document.getElementById('sn').value        = '2665';
+  document.getElementById('tk').value        = '3,4TK';
+  document.getElementById('sender').value    = 'LNG선공사1부설치1과 · 박철성';
+  document.getElementById('urgent').value    = 'P/T 탑재 이벤트 준수를 위해 반드시 일정을 확인하고 조치하여 주시기 바랍니다.';
+  document.getElementById('from').value      = 'VB02';
+  document.getElementById('to').value        = 'UE10';
+  document.getElementById('moveDate').value  = '2026.4.30(목)';
+  document.getElementById('moveTime').value  = '야간';
+  document.getElementById('deadline').value  = '2026.5.9';
+  document.getElementById('extraNote').value = '작업장 내 2686호선 블럭은 우선 텐트 적치장으로 이동 바랍니다.';
+
+  addScheduleRow('5/2 (토)', 'L/D COVER 패시베이션',      '천우테크',              'done');
+  addScheduleRow('5/4 (월)', 'L/D COVER 패시베이션 검사', '오전 09:00',            'ing');
+  addScheduleRow('5/4~5/5',  '보온작업',                   '승인',                  'ing');
+  addScheduleRow('5/6 (수)', '보온검사 & TORQUE 검사',     '오전 검사 후 TACK WD',  'plan');
 
   addActionRow('동커버 작업장 내 블럭 탑재 공간 정리를 완료해 주시기 바랍니다.');
   addActionRow('작업장 내 2686호선 블럭은 우선 텐트 적치장으로 이동해 주시기 바랍니다.');
   addActionRow('P/T 탑재 마감일 준수를 위해 일정 지연 없이 진행 바랍니다.');
   addActionRow('일정 변경 또는 이슈 발생 시 즉시 담당자에게 연락 주시기 바랍니다.');
 
-  document.getElementById('sn').value = '2665';
-  document.getElementById('tk').value = '3,4TK';
-  document.getElementById('sender').value = 'LNG선공사1부설치1과 · 박철성';
-  document.getElementById('urgent').value = 'P/T 탑재 이벤트 준수를 위해 반드시 일정을 확인하고 조치하여 주시기 바랍니다.';
-  document.getElementById('from').value = 'VB02';
-  document.getElementById('to').value = 'UE10';
-  document.getElementById('moveDate').value = '2026.4.30(목)';
-  document.getElementById('deadline').value = '2026.5.9';
-  document.getElementById('extraNote').value = '작업장 내 2686호선 블럭은 우선 텐트 적치장으로 이동 바랍니다.';
-
-  renderPreview();
   renderHistory();
 };
 
-// ── 탭 전환 ──
+/* 탭 전환 */
 function switchTab(tab) {
-  document.getElementById('tab-editor').style.display = tab === 'editor' ? 'grid' : 'none';
-  document.getElementById('tab-history').style.display = tab === 'history' ? 'block' : 'none';
-  document.querySelectorAll('.tab-btn').forEach((b, i) => {
-    b.classList.toggle('active', (i === 0 && tab === 'editor') || (i === 1 && tab === 'history'));
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  ['form','preview','history'].forEach((t,i) => {
+    if (t === tab) document.querySelectorAll('.tab-btn')[i].classList.add('active');
   });
+  if (tab === 'preview') renderPreviewIframe();
   if (tab === 'history') renderHistory();
 }
 
-// ── 일정 행 ──
-function addScheduleRow(date = '', content = '', note = '', status = 'plan') {
-  const id = scheduleId++;
-  scheduleRows.push({ id, date, content, note, status });
-  renderScheduleRows();
-  renderPreview();
+/* 일정 행 */
+function addScheduleRow(date='', content='', note='', status='plan') {
+  scheduleRows.push({ id: schedId++, date, content, note, status });
+  renderScheduleList();
 }
-
 function removeScheduleRow(id) {
   scheduleRows = scheduleRows.filter(r => r.id !== id);
-  renderScheduleRows();
-  renderPreview();
+  renderScheduleList();
 }
-
-function updateScheduleRow(id, field, value) {
-  const row = scheduleRows.find(r => r.id === id);
-  if (row) { row[field] = value; renderPreview(); }
+function updateSched(id, field, val) {
+  const r = scheduleRows.find(r => r.id === id);
+  if (r) r[field] = val;
 }
-
-function renderScheduleRows() {
-  const container = document.getElementById('schedule-rows');
-  container.innerHTML = scheduleRows.map(row => `
-    <div class="schedule-row">
-      <div class="schedule-row-grid">
+function renderScheduleList() {
+  document.getElementById('schedule-list').innerHTML = scheduleRows.map(r => `
+    <div class="sched-item">
+      <div class="sched-top">
+        <div><div class="sched-lbl">일자</div><input class="sched-input" value="${esc(r.date)}" placeholder="5/2 (토)" oninput="updateSched(${r.id},'date',this.value)"></div>
+        <div><div class="sched-lbl">작업 내용</div><input class="sched-input" value="${esc(r.content)}" placeholder="작업 내용" oninput="updateSched(${r.id},'content',this.value)"></div>
+      </div>
+      <div class="sched-bottom">
+        <div><div class="sched-lbl">비고</div><input class="sched-input" value="${esc(r.note)}" placeholder="비고" oninput="updateSched(${r.id},'note',this.value)"></div>
         <div>
-          <div class="row-label">일자</div>
-          <input value="${esc(row.date)}" placeholder="5/2 (토)" oninput="updateScheduleRow(${row.id},'date',this.value)">
-        </div>
-        <div>
-          <div class="row-label">작업 내용</div>
-          <input value="${esc(row.content)}" placeholder="작업 내용" oninput="updateScheduleRow(${row.id},'content',this.value)">
-        </div>
-        <div>
-          <div class="row-label">비고</div>
-          <input value="${esc(row.note)}" placeholder="비고" oninput="updateScheduleRow(${row.id},'note',this.value)">
-        </div>
-        <div>
-          <div class="row-label">상태</div>
-          <select onchange="updateScheduleRow(${row.id},'status',this.value)">
-            <option value="done" ${row.status === 'done' ? 'selected' : ''}>완료</option>
-            <option value="ing"  ${row.status === 'ing'  ? 'selected' : ''}>진행중</option>
-            <option value="plan" ${row.status === 'plan' ? 'selected' : ''}>예정</option>
+          <div class="sched-lbl">상태</div>
+          <select class="sched-select" style="width:82px;" onchange="updateSched(${r.id},'status',this.value)">
+            <option value="done" ${r.status==='done'?'selected':''}>✅완료</option>
+            <option value="ing"  ${r.status==='ing' ?'selected':''}>🔄진행</option>
+            <option value="plan" ${r.status==='plan'?'selected':''}>📌예정</option>
           </select>
         </div>
-        <button class="del-btn" onclick="removeScheduleRow(${row.id})">✕</button>
+        <button class="del-btn" onclick="removeScheduleRow(${r.id})">✕</button>
       </div>
-    </div>
-  `).join('');
+    </div>`).join('');
 }
 
-// ── 요청사항 ──
-function addActionRow(text = '') {
-  const id = actionId++;
-  actionItems.push({ id, text });
-  renderActionRows();
-  renderPreview();
+/* 요청사항 */
+function addActionRow(text='') {
+  actionItems.push({ id: actId++, text });
+  renderActionList();
 }
-
 function removeActionRow(id) {
   actionItems = actionItems.filter(a => a.id !== id);
-  renderActionRows();
-  renderPreview();
+  renderActionList();
 }
-
-function updateActionRow(id, value) {
-  const item = actionItems.find(a => a.id === id);
-  if (item) { item.text = value; renderPreview(); }
+function updateAction(id, val) {
+  const a = actionItems.find(a => a.id === id);
+  if (a) a.text = val;
 }
-
-function renderActionRows() {
-  const container = document.getElementById('action-rows');
-  container.innerHTML = actionItems.map(a => `
+function renderActionList() {
+  document.getElementById('action-list').innerHTML = actionItems.map(a => `
     <div class="action-item">
-      <input value="${esc(a.text)}" placeholder="요청사항 입력..." oninput="updateActionRow(${a.id},this.value)">
+      <input value="${esc(a.text)}" placeholder="요청사항 입력..." oninput="updateAction(${a.id},this.value)">
       <button class="del-btn" onclick="removeActionRow(${a.id})">✕</button>
-    </div>
-  `).join('');
+    </div>`).join('');
 }
 
-// ── D-day 계산 ──
-function calcDday(deadlineStr) {
-  if (!deadlineStr) return '';
-  const parts = deadlineStr.replace(/\./g, '-').split('-');
-  if (parts.length < 3) return '';
-  const target = new Date(parts[0], parseInt(parts[1]) - 1, parseInt(parts[2]));
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const diff = Math.ceil((target - today) / (1000 * 60 * 60 * 24));
-  if (diff === 0) return 'D-DAY';
-  if (diff > 0) return `D-${diff}`;
-  return `D+${Math.abs(diff)}`;
+/* 이스케이프 */
+function esc(s) {
+  return (s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
-// ── 상태 뱃지 ──
-function badgeHTML(status) {
-  const map = { done: ['done', '완료'], ing: ['ing', '진행중'], plan: ['plan', '예정'] };
-  const [cls, label] = map[status] || ['plan', '예정'];
-  return `<span class="badge ${cls}">${label}</span>`;
+/* 상태 뱃지 */
+function badge(status) {
+  const m = { done:['#d4edda','#1a7a4a','완료'], ing:['#fff3cd','#7a5700','진행중'], plan:['#e8f0fe','#003087','예정'] };
+  const [bg,fg,label] = m[status]||m.plan;
+  return `<span style="display:inline-block;padding:4px 14px;border-radius:20px;font-size:13px;font-weight:800;background:${bg};color:${fg};">${label}</span>`;
 }
 
-function esc(str) {
-  return (str || '').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-}
-
-// ── 이메일 HTML 생성 ──
+/* ══ PC 최적화 메일 HTML 생성 ══ */
 function buildEmailHTML() {
-  const sn       = document.getElementById('sn').value || 'XXXX';
-  const tk       = document.getElementById('tk').value || '';
-  const sender   = document.getElementById('sender').value || '';
-  const urgent   = document.getElementById('urgent').value || '';
-  const from     = document.getElementById('from').value || '';
-  const to       = document.getElementById('to').value || '';
-  const moveDate = document.getElementById('moveDate').value || '';
-  const moveTime = document.getElementById('moveTime').value || '';
-  const deadline = document.getElementById('deadline').value || '';
-  const extra    = document.getElementById('extraNote').value || '';
-  const dday     = calcDday(deadline);
+  const g  = id => document.getElementById(id).value || '';
+  const sn = g('sn')||'XXXX', tk=g('tk'), sender=g('sender'), urgent=g('urgent');
+  const from=g('from'), to=g('to'), moveDate=g('moveDate'), moveTime=g('moveTime');
+  const deadline=g('deadline'), extra=g('extraNote');
 
-  const scheduleHTML = scheduleRows.map(r => `
-    <tr>
-      <td style="text-align:center;font-size:14px;font-weight:800;padding:11px 13px;border-bottom:1px solid #eef0f3;vertical-align:middle;"><strong>${esc(r.date)}</strong></td>
-      <td style="text-align:center;font-size:14px;font-weight:700;padding:11px 13px;border-bottom:1px solid #eef0f3;vertical-align:middle;">${esc(r.content)}</td>
-      <td style="text-align:center;font-size:13px;font-weight:700;color:#555;padding:11px 13px;border-bottom:1px solid #eef0f3;vertical-align:middle;">${esc(r.note)}</td>
-      <td style="text-align:center;padding:11px 13px;border-bottom:1px solid #eef0f3;vertical-align:middle;">${badgeHTML(r.status)}</td>
-    </tr>
-  `).join('');
+  const schedHTML = scheduleRows.map((r,i) => `
+    <tr style="background:${i%2===1?'#f7f9fc':'#fff'};">
+      <td style="padding:14px 18px;text-align:center;font-size:15px;font-weight:800;border-bottom:1px solid #eef0f3;vertical-align:middle;white-space:nowrap;"><strong>${esc(r.date)}</strong></td>
+      <td style="padding:14px 18px;text-align:center;font-size:15px;font-weight:700;border-bottom:1px solid #eef0f3;vertical-align:middle;">${esc(r.content)}</td>
+      <td style="padding:14px 18px;text-align:center;font-size:14px;font-weight:700;color:#555;border-bottom:1px solid #eef0f3;vertical-align:middle;">${esc(r.note)}</td>
+      <td style="padding:14px 18px;text-align:center;border-bottom:1px solid #eef0f3;vertical-align:middle;">${badge(r.status)}</td>
+    </tr>`).join('');
 
-  const actionsHTML = actionItems.filter(a => a.text).map(a =>
-    `<li style="display:flex;align-items:flex-start;gap:7px;font-size:13px;font-weight:700;color:#333;margin-bottom:8px;line-height:1.6;">
-      <span style="color:#c0392b;font-size:10px;margin-top:4px;flex-shrink:0;">▶</span>
-      ${esc(a.text)}
-    </li>`
-  ).join('');
+  const actHTML = actionItems.filter(a=>a.text).map(a =>
+    `<tr><td style="padding:9px 0;font-size:14px;font-weight:700;color:#333;line-height:1.7;border-bottom:1px solid #f5e8e8;">
+      <span style="color:#c0392b;margin-right:8px;font-size:11px;">▶</span>${esc(a.text)}</td></tr>`).join('');
 
-  return `
-<!DOCTYPE html>
+  return `<!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap');
-  body { font-family: 'Nanum Gothic', 'Apple SD Gothic Neo', sans-serif; background:#f0f2f5; padding:20px; }
-  .wrap { max-width:660px; margin:0 auto; background:#fff; border-radius:12px; overflow:hidden; box-shadow:0 4px 24px rgba(0,0,0,0.1); }
-  .badge { display:inline-block; padding:3px 10px; border-radius:20px; font-size:12px; font-weight:800; }
-  .badge.done { background:#d4edda; color:#1a7a4a; }
-  .badge.ing  { background:#fff3cd; color:#7a5700; }
-  .badge.plan { background:#e8f0fe; color:#003087; }
+  body{margin:0;padding:28px 20px;background:#eef1f6;font-family:'Nanum Gothic','Apple SD Gothic Neo',sans-serif;}
 </style>
 
 </head>
 <body>
-<div class="wrap">
+<div style="max-width:680px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 8px 40px rgba(0,42,110,0.15);">
 
-  <div style="background:linear-gradient(135deg,#003087,#0057c2);padding:28px 32px;">
-    <div style="display:inline-block;background:#ff4444;color:#fff;font-size:10px;font-weight:800;letter-spacing:1px;padding:3px 10px;border-radius:4px;margin-bottom:10px;">🚢 블럭이동 공식 공지</div>
-    <div style="color:#fff;font-size:20px;font-weight:800;line-height:1.35;">[동커버] SN${esc(sn)} 블럭 이동 요청<br><span style="color:#7ec8ff;">${esc(from)} → ${esc(to)}</span></div>
-    <div style="color:rgba(255,255,255,0.65);font-size:13px;margin-top:6px;">발신: ${esc(sender)}</div>
+  <!-- 헤더 -->
+
+  <div style="background:linear-gradient(135deg,#002a6e 0%,#0057c2 100%);padding:32px 36px;position:relative;overflow:hidden;">
+    <div style="position:absolute;top:-70px;right:-70px;width:240px;height:240px;border-radius:50%;background:rgba(255,255,255,0.05);pointer-events:none;"></div>
+    <div style="display:inline-block;background:#ff3333;color:#fff;font-size:11px;font-weight:800;letter-spacing:1px;padding:4px 14px;border-radius:6px;margin-bottom:14px;">🚢 블럭이동 공식 공지</div>
+    <div style="color:#fff;font-size:23px;font-weight:800;line-height:1.45;">[동커버] SN${esc(sn)} 블럭 이동 요청<br><span style="color:#7ec8ff;font-size:26px;">${esc(from)} → ${esc(to)}</span></div>
+    <div style="color:rgba(255,255,255,0.65);font-size:13px;margin-top:10px;font-weight:700;">발신: ${esc(sender)}</div>
   </div>
 
-  <div style="background:#fff3cd;border-left:5px solid #ffc107;padding:12px 22px;display:flex;align-items:center;gap:10px;">
-    <span style="font-size:20px;">⚠️</span>
-    <span style="font-size:14px;font-weight:800;color:#7a5700;">${esc(urgent)}</span>
+  <!-- 긴급 배너 -->
+
+  <div style="background:#fff8e1;border-left:6px solid #ffc107;padding:16px 26px;display:flex;align-items:flex-start;gap:14px;">
+    <span style="font-size:24px;flex-shrink:0;line-height:1.3;">⚠️</span>
+    <span style="font-size:15px;font-weight:800;color:#7a5700;line-height:1.6;">${esc(urgent)}</span>
   </div>
 
-  <div style="padding:20px 28px;border-bottom:1px solid #eef0f3;">
-    <div style="font-size:11px;font-weight:800;color:#999;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:12px;">📋 핵심 정보</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-      <div style="background:#e8f0fe;border-radius:8px;padding:13px 15px;border:1px solid #b3c8fa;">
-        <div style="font-size:11px;color:#999;font-weight:800;margin-bottom:3px;">선번 / TK</div>
-        <div style="font-size:18px;font-weight:800;color:#003087;">SN${esc(sn)} · ${esc(tk)}</div>
+  <!-- 핵심 정보 -->
+
+  <div style="padding:26px 32px;border-bottom:1px solid #eef0f3;">
+    <div style="font-size:11px;font-weight:800;color:#aaa;letter-spacing:1.5px;margin-bottom:16px;">📋 핵심 정보</div>
+    <table style="width:100%;border-collapse:separate;border-spacing:10px;margin:-10px;">
+      <tr>
+        <td style="background:#e8f0fe;border-radius:12px;padding:18px 20px;border:1px solid #b3c8fa;width:50%;">
+          <div style="font-size:11px;color:#7a8599;font-weight:800;margin-bottom:6px;">선번 / TK</div>
+          <div style="font-size:22px;font-weight:800;color:#002a6e;">SN${esc(sn)} · ${esc(tk)}</div>
+        </td>
+        <td style="background:#fff5f5;border-radius:12px;padding:18px 20px;border:1px solid #ffcccc;width:50%;">
+          <div style="font-size:11px;color:#7a8599;font-weight:800;margin-bottom:6px;">P/T 탑재 마감</div>
+          <div style="font-size:22px;font-weight:800;color:#c0392b;">${esc(deadline)}</div>
+        </td>
+      </tr>
+      <tr>
+        <td style="background:#f7f9fc;border-radius:12px;padding:18px 20px;border:1px solid #e4e8ee;">
+          <div style="font-size:11px;color:#7a8599;font-weight:800;margin-bottom:6px;">블럭 이동일</div>
+          <div style="font-size:22px;font-weight:800;color:#002a6e;">${esc(moveDate)}</div>
+        </td>
+        <td style="background:#f7f9fc;border-radius:12px;padding:18px 20px;border:1px solid #e4e8ee;">
+          <div style="font-size:11px;color:#7a8599;font-weight:800;margin-bottom:6px;">이동 시간대</div>
+          <div style="font-size:22px;font-weight:800;color:#002a6e;">${esc(moveTime)}</div>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- 이동 경로 -->
+
+  <div style="padding:26px 32px;border-bottom:1px solid #eef0f3;">
+    <div style="font-size:11px;font-weight:800;color:#aaa;letter-spacing:1.5px;margin-bottom:16px;">🔀 블럭 이동 경로</div>
+    <div style="background:#f7f9fc;border-radius:14px;padding:24px;display:flex;align-items:center;justify-content:center;gap:24px;border:1px solid #e4e8ee;">
+      <div style="text-align:center;">
+        <div style="font-size:12px;color:#999;font-weight:800;margin-bottom:8px;letter-spacing:0.5px;">출발 (현재 위치)</div>
+        <div style="font-size:40px;font-weight:800;color:#c0392b;line-height:1;">${esc(from)||'—'}</div>
       </div>
-      <div style="background:#f7f9fc;border-radius:8px;padding:13px 15px;border:1px solid #e4e8ee;">
-        <div style="font-size:11px;color:#999;font-weight:800;margin-bottom:3px;">P/T 탑재 마감</div>
-        <div style="font-size:18px;font-weight:800;color:#c0392b;">${esc(deadline)}</div>
-      </div>
-      <div style="background:#f7f9fc;border-radius:8px;padding:13px 15px;border:1px solid #e4e8ee;">
-        <div style="font-size:11px;color:#999;font-weight:800;margin-bottom:3px;">블럭 이동일</div>
-        <div style="font-size:18px;font-weight:800;color:#003087;">${esc(moveDate)}</div>
-      </div>
-      <div style="background:#f7f9fc;border-radius:8px;padding:13px 15px;border:1px solid #e4e8ee;">
-        <div style="font-size:11px;color:#999;font-weight:800;margin-bottom:3px;">이동 시간대</div>
-        <div style="font-size:18px;font-weight:800;color:#003087;">${esc(moveTime)}</div>
+      <div style="font-size:40px;font-weight:800;color:#002a6e;line-height:1;padding-top:20px;">→</div>
+      <div style="text-align:center;">
+        <div style="font-size:12px;color:#999;font-weight:800;margin-bottom:8px;letter-spacing:0.5px;">도착 (목적 위치)</div>
+        <div style="font-size:40px;font-weight:800;color:#1a7a4a;line-height:1;">${esc(to)||'—'}</div>
       </div>
     </div>
-  </div>
-
-  <div style="padding:20px 28px;border-bottom:1px solid #eef0f3;">
-    <div style="font-size:11px;font-weight:800;color:#999;letter-spacing:1.2px;margin-bottom:12px;">🔀 블럭 이동 경로</div>
-    <div style="background:#f7f9fc;border-radius:10px;padding:18px;display:flex;align-items:center;justify-content:center;gap:14px;border:1px solid #e4e8ee;">
-      <div style="text-align:center;">
-        <div style="font-size:11px;color:#999;margin-bottom:3px;">출발 (현재 위치)</div>
-        <div style="font-size:26px;font-weight:800;color:#c0392b;line-height:1;">${esc(from)}</div>
-      </div>
-      <div style="font-size:26px;font-weight:800;color:#003087;">→</div>
-      <div style="text-align:center;">
-        <div style="font-size:11px;color:#999;margin-bottom:3px;">도착 (목적 위치)</div>
-        <div style="font-size:26px;font-weight:800;color:#1a7a4a;line-height:1;">${esc(to)}</div>
-      </div>
-    </div>
-    ${extra ? `<div style="font-size:12px;color:#666;text-align:center;margin-top:8px;font-weight:700;">※ ${esc(extra)}</div>` : ''}
+    ${extra ? `<div style="font-size:13px;font-weight:800;color:#666;text-align:center;margin-top:12px;">※ ${esc(extra)}</div>` : ''}
   </div>
 
 ${scheduleRows.length > 0 ? `
 
-  <div style="padding:20px 28px;border-bottom:1px solid #eef0f3;">
-    <div style="font-size:11px;font-weight:800;color:#999;letter-spacing:1.2px;margin-bottom:12px;">📅 작업 일정</div>
-    <table style="width:100%;border-collapse:collapse;font-size:14px;">
+  <!-- 작업 일정 -->
+
+  <div style="padding:26px 32px;border-bottom:1px solid #eef0f3;">
+    <div style="font-size:11px;font-weight:800;color:#aaa;letter-spacing:1.5px;margin-bottom:16px;">📅 작업 일정</div>
+    <table style="width:100%;border-collapse:collapse;border-radius:12px;overflow:hidden;">
       <thead>
-        <tr>
-          <th style="background:#003087;color:#fff;padding:11px 13px;text-align:center;font-size:13px;font-weight:800;">일자</th>
-          <th style="background:#003087;color:#fff;padding:11px 13px;text-align:center;font-size:13px;font-weight:800;">작업 내용</th>
-          <th style="background:#003087;color:#fff;padding:11px 13px;text-align:center;font-size:13px;font-weight:800;">비고</th>
-          <th style="background:#003087;color:#fff;padding:11px 13px;text-align:center;font-size:13px;font-weight:800;">상태</th>
+        <tr style="background:#002a6e;">
+          <th style="padding:14px 18px;text-align:center;font-size:14px;font-weight:800;color:#fff;white-space:nowrap;">일자</th>
+          <th style="padding:14px 18px;text-align:center;font-size:14px;font-weight:800;color:#fff;">작업 내용</th>
+          <th style="padding:14px 18px;text-align:center;font-size:14px;font-weight:800;color:#fff;">비고</th>
+          <th style="padding:14px 18px;text-align:center;font-size:14px;font-weight:800;color:#fff;white-space:nowrap;">상태</th>
         </tr>
       </thead>
-      <tbody>${scheduleHTML}</tbody>
+      <tbody>${schedHTML}</tbody>
     </table>
   </div>` : ''}
 
-${actionsHTML ? `
+${actHTML ? `
 
-  <div style="padding:20px 28px;border-bottom:1px solid #eef0f3;">
-    <div style="font-size:11px;font-weight:800;color:#999;letter-spacing:1.2px;margin-bottom:12px;">✅ 담당자 조치 요청사항</div>
-    <div style="background:#fff5f5;border:2px solid #ffcccc;border-radius:10px;padding:16px;">
-      <div style="font-size:14px;font-weight:800;color:#c0392b;margin-bottom:10px;">🔴 아래 사항을 반드시 확인해 주세요</div>
-      <ul style="list-style:none;margin:0;padding:0;">${actionsHTML}</ul>
+  <!-- 요청사항 -->
+
+  <div style="padding:26px 32px;border-bottom:1px solid #eef0f3;">
+    <div style="font-size:11px;font-weight:800;color:#aaa;letter-spacing:1.5px;margin-bottom:16px;">✅ 담당자 조치 요청사항</div>
+    <div style="background:#fff5f5;border:2px solid #ffcccc;border-radius:14px;padding:20px 22px;">
+      <div style="font-size:15px;font-weight:800;color:#c0392b;margin-bottom:14px;">🔴 아래 사항을 반드시 확인해 주세요</div>
+      <table style="width:100%;border-collapse:collapse;">${actHTML}</table>
     </div>
   </div>` : ''}
 
-  <div style="background:#f7f9fc;padding:14px 28px;text-align:center;font-size:12px;font-weight:700;color:#888;">
+  <!-- 푸터 -->
+
+  <div style="background:#f4f7fc;padding:18px 32px;text-align:center;font-size:13px;font-weight:800;color:#888;border-top:1px solid #eef0f3;">
     문의: ${esc(sender)} | 본 메일은 공식 블럭이동 공지입니다.
   </div>
 
@@ -1004,184 +627,97 @@ ${actionsHTML ? `
 </html>`;
 }
 
-// ── 미리보기 렌더링 ──
-function renderPreview() {
-const sn       = document.getElementById(‘sn’).value || ‘XXXX’;
-const tk       = document.getElementById(‘tk’).value || ‘’;
-const sender   = document.getElementById(‘sender’).value || ‘’;
-const urgent   = document.getElementById(‘urgent’).value || ‘’;
-const from     = document.getElementById(‘from’).value || ‘’;
-const to       = document.getElementById(‘to’).value || ‘’;
-const moveDate = document.getElementById(‘moveDate’).value || ‘’;
-const moveTime = document.getElementById(‘moveTime’).value || ‘’;
-const deadline = document.getElementById(‘deadline’).value || ‘’;
-const extra    = document.getElementById(‘extraNote’).value || ‘’;
-const dday     = calcDday(deadline);
-
-const scheduleHTML = scheduleRows.map(r => `<tr> <td><strong>${esc(r.date)}</strong></td> <td>${esc(r.content)}</td> <td>${esc(r.note)}</td> <td>${badgeHTML(r.status)}</td> </tr>`).join(’’);
-
-const actionsHTML = actionItems.filter(a => a.text).map(a =>
-`<li><span style="color:#c0392b;font-size:10px;flex-shrink:0;margin-top:3px;">▶</span>${esc(a.text)}</li>`
-).join(’’);
-
-document.getElementById(‘email-preview’).innerHTML = `
-<div class="ep-header">
-<div class="ep-tag">🚢 블럭이동 공식 공지</div>
-<h1>[동커버] SN${esc(sn)} 블럭 이동 요청<br><span>${esc(from)} → ${esc(to)}</span></h1>
-<div class="ep-header-sub">발신: ${esc(sender)}</div>
-</div>
-
-```
-<div class="ep-urgent">
-  <span>⚠️</span>
-  <span>${esc(urgent)}</span>
-</div>
-
-<div class="ep-section">
-  <div class="ep-section-title">📋 핵심 정보</div>
-  <div class="ep-info-grid">
-    <div class="ep-info-card hl"><label>선번 / TK</label><div class="val">SN${esc(sn)} · ${esc(tk)}</div></div>
-    <div class="ep-info-card"><label>P/T 탑재 마감</label><div class="val red">${esc(deadline)}</div></div>
-    <div class="ep-info-card"><label>블럭 이동일</label><div class="val">${esc(moveDate)}</div></div>
-    <div class="ep-info-card"><label>이동 시간대</label><div class="val">${esc(moveTime)}</div></div>
-  </div>
-</div>
-
-<div class="ep-section">
-  <div class="ep-section-title">🔀 블럭 이동 경로</div>
-  <div class="ep-route">
-    <div class="ep-route-node from"><div class="nl">출발 (현재 위치)</div><div class="nv">${esc(from) || '—'}</div></div>
-    <div class="ep-arrow">→</div>
-    <div class="ep-route-node to"><div class="nl">도착 (목적 위치)</div><div class="nv">${esc(to) || '—'}</div></div>
-  </div>
-  ${extra ? `<div class="ep-route-note">※ ${esc(extra)}</div>` : ''}
-</div>
-
-${scheduleRows.length > 0 ? `
-<div class="ep-section">
-  <div class="ep-section-title">📅 작업 일정</div>
-  <table class="ep-table">
-    <thead><tr><th>일자</th><th>작업 내용</th><th>비고</th><th>상태</th></tr></thead>
-    <tbody>${scheduleHTML}</tbody>
-  </table>
-</div>` : ''}
-
-${actionsHTML ? `
-<div class="ep-section">
-  <div class="ep-section-title">✅ 담당자 조치 요청사항</div>
-  <div class="ep-actions">
-    <div class="ep-action-title">🔴 아래 사항을 반드시 확인해 주세요</div>
-    <ul class="ep-action-list">${actionsHTML}</ul>
-  </div>
-</div>` : ''}
-
-<div class="ep-footer">문의: ${esc(sender)} | 본 메일은 공식 블럭이동 공지입니다.</div>
-```
-
-`;
-}
-
-// ── HTML 복사 ──
-function copyEmailHTML() {
+/* 미리보기 iframe */
+function renderPreviewIframe() {
 const html = buildEmailHTML();
-navigator.clipboard.writeText(html).then(() => {
-showToast(‘📋 메일 HTML이 클립보드에 복사되었습니다!’);
-const btn = document.getElementById(‘copy-btn-top’);
-btn.classList.add(‘copied’);
-btn.textContent = ‘✅ 복사 완료!’;
-setTimeout(() => { btn.classList.remove(‘copied’); btn.textContent = ‘📋 HTML 복사’; }, 2000);
-}).catch(() => {
-showToast(‘⚠️ 복사 실패. 브라우저 권한을 확인해주세요.’);
+const iframe = document.getElementById(‘preview-iframe’);
+const doc = iframe.contentDocument || iframe.contentWindow.document;
+doc.open(); doc.write(html); doc.close();
+
+setTimeout(() => {
+const wrap = document.querySelector(’.preview-scaler-wrap’);
+const wrapW = wrap.clientWidth;
+const emailW = 720; // body padding 포함
+const scale = Math.min(1, wrapW / emailW);
+const scrollH = doc.documentElement.scrollHeight || doc.body.scrollHeight;
+iframe.style.width = (wrapW / scale) + ‘px’;
+iframe.style.height = (scrollH + 40) + ‘px’;
+iframe.style.transform = `scale(${scale})`;
+iframe.style.transformOrigin = ‘top left’;
+wrap.style.height = ((scrollH + 40) * scale) + ‘px’;
+}, 300);
+}
+
+/* HTML 복사 */
+function copyHTML() {
+navigator.clipboard.writeText(buildEmailHTML()).then(() => {
+showToast(‘📋 메일 HTML 복사 완료!’);
+[‘copy-btn’,‘copy-btn2’].forEach(id => {
+const b = document.getElementById(id);
+if (!b) return;
+b.classList.add(‘copied’); b.textContent = ‘✅ 복사 완료!’;
+setTimeout(() => { b.classList.remove(‘copied’); b.textContent = ‘📋 메일 HTML 복사’; }, 2000);
 });
+}).catch(() => showToast(‘⚠️ 복사 실패. 브라우저 권한을 확인해주세요.’));
 }
 
-// ── 히스토리 저장/로드 ──
-function getHistory() {
-try { return JSON.parse(localStorage.getItem(‘blockMoveHistory’) || ‘[]’); } catch { return []; }
-}
-
+/* 저장/불러오기 */
+function getHistory() { try { return JSON.parse(localStorage.getItem(‘bmHist’)||’[]’); } catch { return []; } }
 function saveToHistory() {
 const data = {
-id: Date.now(),
-savedAt: new Date().toLocaleDateString(‘ko-KR’),
-sn: document.getElementById(‘sn’).value,
-tk: document.getElementById(‘tk’).value,
-sender: document.getElementById(‘sender’).value,
-urgent: document.getElementById(‘urgent’).value,
-from: document.getElementById(‘from’).value,
-to: document.getElementById(‘to’).value,
-moveDate: document.getElementById(‘moveDate’).value,
-moveTime: document.getElementById(‘moveTime’).value,
-deadline: document.getElementById(‘deadline’).value,
-extraNote: document.getElementById(‘extraNote’).value,
+id: Date.now(), savedAt: new Date().toLocaleDateString(‘ko-KR’),
+sn: document.getElementById(‘sn’).value, tk: document.getElementById(‘tk’).value,
+sender: document.getElementById(‘sender’).value, urgent: document.getElementById(‘urgent’).value,
+from: document.getElementById(‘from’).value, to: document.getElementById(‘to’).value,
+moveDate: document.getElementById(‘moveDate’).value, moveTime: document.getElementById(‘moveTime’).value,
+deadline: document.getElementById(‘deadline’).value, extraNote: document.getElementById(‘extraNote’).value,
 scheduleRows: JSON.parse(JSON.stringify(scheduleRows)),
-actionItems: JSON.parse(JSON.stringify(actionItems)),
+actionItems:  JSON.parse(JSON.stringify(actionItems)),
 };
-const history = getHistory();
-history.unshift(data);
-localStorage.setItem(‘blockMoveHistory’, JSON.stringify(history.slice(0, 20)));
-showToast(‘💾 저장 완료! 저장 목록에서 확인하세요.’);
+const h = getHistory(); h.unshift(data);
+localStorage.setItem(‘bmHist’, JSON.stringify(h.slice(0,30)));
+showToast(‘💾 저장 완료!’);
 }
-
 function loadFromHistory(id) {
-const data = getHistory().find(h => h.id === id);
-if (!data) return;
-
-document.getElementById(‘sn’).value = data.sn || ‘’;
-document.getElementById(‘tk’).value = data.tk || ‘’;
-document.getElementById(‘sender’).value = data.sender || ‘’;
-document.getElementById(‘urgent’).value = data.urgent || ‘’;
-document.getElementById(‘from’).value = data.from || ‘’;
-document.getElementById(‘to’).value = data.to || ‘’;
-document.getElementById(‘moveDate’).value = data.moveDate || ‘’;
-document.getElementById(‘moveTime’).value = data.moveTime || ‘야간’;
-document.getElementById(‘deadline’).value = data.deadline || ‘’;
-document.getElementById(‘extraNote’).value = data.extraNote || ‘’;
-
-scheduleRows = data.scheduleRows || [];
-actionItems = data.actionItems || [];
-scheduleId = scheduleRows.length ? Math.max(…scheduleRows.map(r => r.id)) + 1 : 0;
-actionId   = actionItems.length  ? Math.max(…actionItems.map(a => a.id))  + 1 : 0;
-
-renderScheduleRows();
-renderActionRows();
-renderPreview();
-switchTab(‘editor’);
-showToast(‘✅ 불러오기 완료!’);
+const data = getHistory().find(h=>h.id===id); if (!data) return;
+[‘sn’,‘tk’,‘sender’,‘urgent’,‘from’,‘to’,‘moveDate’,‘deadline’,‘extraNote’].forEach(k => {
+document.getElementById(k).value = data[k]||’’;
+});
+document.getElementById(‘moveTime’).value = data.moveTime||‘야간’;
+scheduleRows = data.scheduleRows||[]; actionItems = data.actionItems||[];
+schedId = scheduleRows.length ? Math.max(…scheduleRows.map(r=>r.id))+1 : 0;
+actId   = actionItems.length  ? Math.max(…actionItems.map(a=>a.id))+1 : 0;
+renderScheduleList(); renderActionList();
+switchTab(‘form’); showToast(‘✅ 불러오기 완료!’);
 }
-
 function deleteHistory(id) {
-const history = getHistory().filter(h => h.id !== id);
-localStorage.setItem(‘blockMoveHistory’, JSON.stringify(history));
-renderHistory();
-showToast(‘🗑 삭제되었습니다.’);
+localStorage.setItem(‘bmHist’, JSON.stringify(getHistory().filter(h=>h.id!==id)));
+renderHistory(); showToast(‘🗑 삭제 완료’);
 }
-
 function renderHistory() {
-const history = getHistory();
-const container = document.getElementById(‘history-container’);
-if (!history.length) {
-container.innerHTML = ` <div class="history-empty"> <div class="icon">📭</div> <p>저장된 공지가 없습니다.<br>공지 작성 후 저장 버튼을 눌러주세요.</p> </div>`;
+const h = getHistory();
+const el = document.getElementById(‘history-container’);
+if (!h.length) {
+el.innerHTML = `<div class="history-empty"><div class="icon">📭</div><p>저장된 공지가 없습니다.<br>작성 후 저장 버튼을 눌러주세요.</p></div>`;
 return;
 }
-container.innerHTML = `<div style="font-size:13px;font-weight:700;color:var(--muted);margin-bottom:16px;">총 ${history.length}개 저장됨</div> <div class="history-grid"> ${history.map(h =>`
-<div class="history-card" onclick="loadFromHistory(${h.id})">
-<button class="hc-del" onclick="event.stopPropagation();deleteHistory(${h.id})">✕</button>
-<div class="hc-sn">SN${esc(h.sn)} · ${esc(h.tk)}</div>
-<div class="hc-route">${esc(h.from)} → ${esc(h.to)}</div>
-<div class="hc-meta">📅 이동일: ${esc(h.moveDate)}</div>
-<div class="hc-meta">⏰ 마감: ${esc(h.deadline)}</div>
-<div class="hc-meta" style="margin-top:6px;color:#aaa;">저장: ${h.savedAt}</div>
-</div>
-`).join('')} </div>`;
+el.innerHTML = `<div style="font-size:13px;font-weight:800;color:var(--muted);margin-bottom:12px;">총 ${h.length}개 저장됨</div>
+
+  <div class="history-list">${h.map(d=>`
+    <div class="history-card" onclick="loadFromHistory(${d.id})">
+      <button class="hc-del" onclick="event.stopPropagation();deleteHistory(${d.id})">✕</button>
+      <div class="hc-sn">SN${esc(d.sn)} · ${esc(d.tk)}</div>
+      <div class="hc-route">${esc(d.from)} → ${esc(d.to)}</div>
+      <div class="hc-meta">📅 이동일: ${esc(d.moveDate)}<br>⏰ 마감: ${esc(d.deadline)}<br>🕐 저장: ${d.savedAt}</div>
+    </div>`).join('')}
+  </div>`;
 }
 
-// ── Toast ──
+/* Toast */
 function showToast(msg) {
 const t = document.getElementById(‘toast’);
-t.textContent = msg;
-t.classList.add(‘show’);
-setTimeout(() => t.classList.remove(‘show’), 2800);
+t.textContent = msg; t.classList.add(‘show’);
+setTimeout(() => t.classList.remove(‘show’), 2600);
 }
 </script>
 
