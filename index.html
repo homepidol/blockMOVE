@@ -5,69 +5,185 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>블럭이동 공지 생성기</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap');
-*{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Nanum Gothic','Apple SD Gothic Neo',sans-serif;background:#f0f3f8;font-size:14px;}
-.hdr{background:linear-gradient(135deg,#002a6e,#0057c2);padding:12px 16px;display:flex;align-items:center;gap:8px;position:sticky;top:0;z-index:200;}
-.htitle{color:#fff;font-size:15px;font-weight:800;}
-.htitle span{color:#7ec8ff;}
-.hsub{color:rgba(255,255,255,.5);font-size:10px;}
-.tabs{display:flex;background:#001d4e;position:sticky;top:52px;z-index:199;}
-.tab{flex:1;padding:10px 0;color:rgba(255,255,255,.5);font-size:13px;font-weight:800;font-family:inherit;border:none;background:none;border-bottom:3px solid transparent;cursor:pointer;}
-.tab.on{color:#fff;border-bottom-color:#7ec8ff;}
-.pg{display:none;}
-.pg.on{display:block;}
-.wrap{padding:12px;display:flex;flex-direction:column;gap:10px;padding-bottom:80px;}
-.card{background:#fff;border-radius:10px;overflow:hidden;box-shadow:0 1px 4px rgba(0,42,110,.08);}
-.ch{background:#f4f7fc;padding:9px 14px;font-size:11px;font-weight:800;color:#002a6e;border-bottom:1px solid #dde3ed;}
-.cb{padding:12px 14px;display:flex;flex-direction:column;gap:10px;}
-.f{display:flex;flex-direction:column;gap:4px;}
-.f label{font-size:11px;font-weight:800;color:#7a8599;}
-.fi{width:100%;height:40px;padding:0 12px;border:1.5px solid #dde3ed;border-radius:8px;font-size:14px;font-family:inherit;color:#1a1a2e;background:#fafbfd;outline:none;-webkit-appearance:none;}
-.fi:focus{border-color:#0057c2;background:#fff;}
-.fi::placeholder{color:#bec5d0;}
-select.fi{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='7'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%237a8599' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;background-color:#fafbfd;padding-right:30px;}
-textarea.fi{height:64px;padding:8px 12px;resize:none;line-height:1.5;}
-.r2{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
-.sb{background:#f6f8fc;border:1px solid #dde3ed;border-radius:8px;padding:10px;margin-bottom:6px;}
-.sb:last-child{margin-bottom:0;}
-.sb-t{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:6px;}
-.sb-b{display:grid;grid-template-columns:1fr 82px 36px;gap:6px;align-items:end;}
-.lbl{font-size:10px;font-weight:800;color:#7a8599;margin-bottom:3px;}
-.si{width:100%;height:36px;padding:0 8px;border:1.5px solid #dde3ed;border-radius:7px;font-size:13px;font-family:inherit;color:#1a1a2e;background:#fff;outline:none;-webkit-appearance:none;}
-.si:focus{border-color:#0057c2;}
-.si::placeholder{color:#bec5d0;}
-select.si{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='7'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%237a8599' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 6px center;background-color:#fff;padding-right:22px;font-weight:800;}
-.ab{display:flex;gap:6px;align-items:center;margin-bottom:6px;}
-.ab:last-child{margin-bottom:0;}
-.ai{flex:1;height:38px;padding:0 10px;border:1.5px solid #dde3ed;border-radius:7px;font-size:13px;font-family:inherit;color:#1a1a2e;background:#fff;outline:none;-webkit-appearance:none;}
-.ai:focus{border-color:#0057c2;}
-.ai::placeholder{color:#bec5d0;}
-.xb{width:36px;height:36px;flex-shrink:0;background:#fff0f0;border:1px solid #ffcccc;border-radius:7px;color:#c0392b;font-size:16px;font-weight:800;cursor:pointer;font-family:inherit;}
-.addbtn{width:100%;height:40px;background:#eef4ff;border:1.5px dashed #b3c8fa;border-radius:8px;color:#0057c2;font-size:14px;font-weight:800;font-family:inherit;cursor:pointer;margin-top:2px;}
-.bar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #dde3ed;padding:10px 12px;display:flex;gap:8px;z-index:150;box-shadow:0 -3px 12px rgba(0,42,110,.08);}
-.bsave{height:44px;background:#fff;border:2px solid #0057c2;border-radius:10px;color:#0057c2;font-size:14px;font-weight:800;font-family:inherit;cursor:pointer;flex:1;}
-.bcopy{height:44px;background:linear-gradient(135deg,#002a6e,#0057c2);border:none;border-radius:10px;color:#fff;font-size:14px;font-weight:800;font-family:inherit;cursor:pointer;flex:2;}
-.bcopy.ok{background:#1a7a4a;}
-.pvwrap{padding:12px;padding-bottom:80px;}
-.pvnote{background:#e8f0fe;border-left:4px solid #0057c2;border-radius:7px;padding:10px 12px;font-size:11px;font-weight:800;color:#002a6e;margin-bottom:12px;line-height:1.6;}
-.scalebox{overflow:hidden;border-radius:12px;box-shadow:0 3px 16px rgba(0,42,110,.12);}
-#pf{border:none;display:block;transform-origin:top left;}
-.hwrap{padding:12px;padding-bottom:80px;}
-.hemp{text-align:center;padding:48px 20px;color:#7a8599;}
-.hemp .ico{font-size:40px;margin-bottom:8px;}
-.hemp p{font-size:13px;font-weight:700;line-height:1.6;}
-.hc{background:#fff;border-radius:10px;padding:14px;border:1px solid #dde3ed;position:relative;margin-bottom:8px;cursor:pointer;}
-.hc:active{opacity:.8;}
-.hc-sn{font-size:15px;font-weight:800;color:#002a6e;}
-.hc-rt{font-size:12px;font-weight:800;color:#c0392b;margin:2px 0 5px;}
-.hc-mt{font-size:11px;color:#7a8599;font-weight:700;line-height:1.8;}
-.hc-x{position:absolute;top:12px;right:12px;width:28px;height:28px;background:#fff0f0;border:1px solid #ffcccc;border-radius:7px;color:#c0392b;font-size:13px;cursor:pointer;font-family:inherit;}
-.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(30px);background:#1a1a2e;color:#fff;padding:10px 20px;border-radius:20px;font-size:12px;font-weight:800;z-index:999;opacity:0;transition:transform .3s,opacity .3s;white-space:nowrap;pointer-events:none;}
-.toast.on{transform:translateX(-50%) translateY(0);opacity:1;}
+/* ── 폰트: 외부 CDN 없이 시스템 폰트 사용 ── */
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', '맑은 고딕', sans-serif;
+  background: #f0f3f8;
+  font-size: 14px;
+  color: #1a1a2e;
+}
+
+/* ── 헤더 ── */
+.hdr {
+  background: linear-gradient(135deg, #002a6e, #0057c2);
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
+.htitle { color: #fff; font-size: 16px; font-weight: 700; }
+.htitle span { color: #7ec8ff; }
+.hsub { color: rgba(255,255,255,.55); font-size: 10px; margin-top: 1px; }
+
+/* ── 탭 ── */
+.tabs { display: flex; background: #001d4e; position: sticky; top: 52px; z-index: 199; }
+.tab {
+  flex: 1; padding: 11px 0;
+  color: rgba(255,255,255,.5);
+  font-size: 13px; font-weight: 700;
+  font-family: inherit; border: none; background: none;
+  border-bottom: 3px solid transparent; cursor: pointer;
+}
+.tab.on { color: #fff; border-bottom-color: #7ec8ff; }
+.pg { display: none; }
+.pg.on { display: block; }
+
+/* ── 폼 ── */
+.wrap { padding: 12px; display: flex; flex-direction: column; gap: 10px; padding-bottom: 80px; }
+.card { background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,42,110,.08); }
+.ch { background: #f4f7fc; padding: 9px 14px; font-size: 11px; font-weight: 700; color: #002a6e; border-bottom: 1px solid #dde3ed; }
+.cb { padding: 12px 14px; display: flex; flex-direction: column; gap: 10px; }
+.f { display: flex; flex-direction: column; gap: 4px; }
+.f label { font-size: 11px; font-weight: 700; color: #7a8599; }
+
+input, select, textarea, button { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', '맑은 고딕', sans-serif; }
+
+.fi {
+  width: 100%; height: 40px; padding: 0 12px;
+  border: 1.5px solid #dde3ed; border-radius: 8px;
+  font-size: 14px; color: #1a1a2e; background: #fafbfd; outline: none;
+}
+.fi:focus { border-color: #0057c2; background: #fff; }
+.fi::placeholder { color: #bec5d0; }
+textarea.fi { height: 64px; padding: 8px 12px; resize: vertical; line-height: 1.5; }
+select.fi { cursor: pointer; }
+.r2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+/* ── 일정 블록 ── */
+.sb { background: #f6f8fc; border: 1px solid #dde3ed; border-radius: 8px; padding: 10px; margin-bottom: 6px; }
+.sb:last-child { margin-bottom: 0; }
+.sb-t { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 6px; }
+.sb-b { display: grid; grid-template-columns: 1fr 86px 36px; gap: 6px; align-items: end; }
+.lbl { font-size: 10px; font-weight: 700; color: #7a8599; margin-bottom: 3px; }
+.si {
+  width: 100%; height: 36px; padding: 0 8px;
+  border: 1.5px solid #dde3ed; border-radius: 7px;
+  font-size: 13px; color: #1a1a2e; background: #fff; outline: none;
+}
+.si:focus { border-color: #0057c2; }
+.si::placeholder { color: #bec5d0; }
+select.si { cursor: pointer; font-weight: 700; }
+
+/* ── 요청사항 ── */
+.ab { display: flex; gap: 6px; align-items: center; margin-bottom: 6px; }
+.ab:last-child { margin-bottom: 0; }
+.ai {
+  flex: 1; height: 38px; padding: 0 10px;
+  border: 1.5px solid #dde3ed; border-radius: 7px;
+  font-size: 13px; color: #1a1a2e; background: #fff; outline: none;
+}
+.ai:focus { border-color: #0057c2; }
+.ai::placeholder { color: #bec5d0; }
+.xb {
+  width: 36px; height: 36px; flex-shrink: 0;
+  background: #fff0f0; border: 1px solid #ffcccc; border-radius: 7px;
+  color: #c0392b; font-size: 18px; font-weight: 700; cursor: pointer; line-height: 1;
+}
+.addbtn {
+  width: 100%; height: 40px;
+  background: #eef4ff; border: 1.5px dashed #b3c8fa; border-radius: 8px;
+  color: #0057c2; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 2px;
+}
+.addbtn:hover { background: #ddeaff; }
+
+/* ── 하단 버튼바 ── */
+.bar {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: #fff; border-top: 1px solid #dde3ed;
+  padding: 10px 12px; display: flex; gap: 8px;
+  z-index: 150; box-shadow: 0 -3px 12px rgba(0,42,110,.08);
+}
+.bsave {
+  height: 44px; background: #fff; border: 2px solid #0057c2; border-radius: 10px;
+  color: #0057c2; font-size: 14px; font-weight: 700; cursor: pointer; flex: 1;
+}
+.bcopy {
+  height: 44px; background: linear-gradient(135deg, #002a6e, #0057c2);
+  border: none; border-radius: 10px;
+  color: #fff; font-size: 14px; font-weight: 700; cursor: pointer; flex: 2;
+}
+.bcopy.ok { background: #1a7a4a; }
+
+/* ── 미리보기: iframe 대신 div로 직접 렌더 ── */
+.pvwrap { padding: 12px; padding-bottom: 80px; }
+.pvnote {
+  background: #e8f0fe; border-left: 4px solid #0057c2; border-radius: 7px;
+  padding: 10px 12px; font-size: 11px; font-weight: 700; color: #002a6e;
+  margin-bottom: 12px; line-height: 1.6;
+}
+#preview-area {
+  background: #eef1f6; border-radius: 12px; padding: 20px;
+  box-shadow: 0 3px 16px rgba(0,42,110,.12); overflow-x: auto;
+}
+#preview-inner {
+  max-width: 680px; margin: 0 auto; background: #fff;
+  border-radius: 16px; overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0,42,110,.15);
+}
+
+/* ── 복사 결과 팝업 ── */
+#copy-output {
+  display: none; margin-top: 10px;
+  background: #1a1a2e; border-radius: 10px; padding: 12px;
+  max-height: 200px; overflow-y: auto;
+}
+#copy-output textarea {
+  width: 100%; background: transparent; border: none; color: #7ec8ff;
+  font-size: 11px; resize: none; outline: none; font-family: monospace;
+  line-height: 1.4;
+}
+#copy-hint { font-size: 11px; color: #fff; margin-bottom: 6px; font-weight: 700; }
+
+/* ── 히스토리 ── */
+.hwrap { padding: 12px; padding-bottom: 80px; }
+.hemp { text-align: center; padding: 48px 20px; color: #7a8599; }
+.hemp .ico { font-size: 40px; margin-bottom: 8px; }
+.hemp p { font-size: 13px; font-weight: 700; line-height: 1.6; }
+.hc {
+  background: #fff; border-radius: 10px; padding: 14px;
+  border: 1px solid #dde3ed; position: relative;
+  margin-bottom: 8px; cursor: pointer;
+}
+.hc:hover { background: #f7f9fc; }
+.hc-sn { font-size: 15px; font-weight: 700; color: #002a6e; }
+.hc-rt { font-size: 12px; font-weight: 700; color: #c0392b; margin: 2px 0 5px; }
+.hc-mt { font-size: 11px; color: #7a8599; font-weight: 700; line-height: 1.8; }
+.hc-x {
+  position: absolute; top: 12px; right: 12px;
+  width: 28px; height: 28px; background: #fff0f0;
+  border: 1px solid #ffcccc; border-radius: 7px;
+  color: #c0392b; font-size: 13px; cursor: pointer;
+}
+
+/* ── 토스트 ── */
+.toast {
+  position: fixed; bottom: 80px; left: 50%;
+  transform: translateX(-50%) translateY(30px);
+  background: #1a1a2e; color: #fff;
+  padding: 10px 20px; border-radius: 20px;
+  font-size: 12px; font-weight: 700; z-index: 999;
+  opacity: 0; transition: transform .3s, opacity .3s;
+  white-space: nowrap; pointer-events: none;
+}
+.toast.on { transform: translateX(-50%) translateY(0); opacity: 1; }
 </style>
 </head>
 <body>
+
 <div class="hdr">
   <span style="font-size:20px;">🚢</span>
   <div>
@@ -75,25 +191,30 @@ select.si{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
     <div class="hsub">Samsung Heavy Industries</div>
   </div>
 </div>
+
 <div class="tabs">
   <button class="tab on" id="t0" onclick="go(0)">✏️ 작성</button>
   <button class="tab"    id="t1" onclick="go(1)">👁 미리보기</button>
   <button class="tab"    id="t2" onclick="go(2)">📁 저장</button>
 </div>
 
+<!-- 작성 탭 -->
 <div id="p0" class="pg on">
 <div class="wrap">
   <div class="card">
     <div class="ch">📋 기본 정보</div>
     <div class="cb">
       <div class="r2">
-        <div class="f"><label>선번 (SN)</label><input class="fi" id="sn" type="text" inputmode="numeric" placeholder="예: 2665"></div>
+        <div class="f"><label>선번 (SN)</label><input class="fi" id="sn" type="text" placeholder="예: 2665"></div>
         <div class="f"><label>TK 구분</label><input class="fi" id="tk" type="text" placeholder="예: 3,4TK"></div>
       </div>
       <div class="f"><label>발신자</label><input class="fi" id="sender" placeholder="예: LNG선공사1부 · 박철성"></div>
-      <div class="f"><label>긴급 안내 문구</label><textarea class="fi" id="urgent" placeholder="P/T 탑재 이벤트 준수를 위해 반드시 일정을 확인하고 조치하여 주시기 바랍니다."></textarea></div>
+      <div class="f"><label>긴급 안내 문구</label>
+        <textarea class="fi" id="urgent" placeholder="P/T 탑재 이벤트 준수를 위해 반드시 일정을 확인하고 조치하여 주시기 바랍니다."></textarea>
+      </div>
     </div>
   </div>
+
   <div class="card">
     <div class="ch">🔀 이동 정보</div>
     <div class="cb">
@@ -102,15 +223,21 @@ select.si{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
         <div class="f"><label>도착 (TO)</label><input class="fi" id="to" placeholder="UE10"></div>
       </div>
       <div class="r2">
-        <div class="f"><label>이동 일자</label><input class="fi" id="mdate" placeholder="2026.4.30(목)"></div>
+        <div class="f"><label>이동 일자</label><input class="fi" id="mdate" type="date" onchange="fmtDate('mdate','mdate-txt')" style="max-width:180px;"><span id="mdate-txt" style="font-size:13px;color:#0057c2;font-weight:700;margin-top:4px;display:block;"></span></div>
         <div class="f"><label>이동 시간대</label>
-          <select class="fi" id="mtime"><option>야간</option><option>주간</option><option>오전</option><option>오후</option><option>전일</option></select>
+          <select class="fi" id="mtime">
+            <option>야간</option><option>주간</option><option>오전</option><option>오후</option><option>전일</option>
+          </select>
         </div>
       </div>
-      <div class="f"><label>P/T 탑재 일정</label><input class="fi" id="dl" placeholder="2026.5.9"></div>
-      <div class="f"><label>추가 안내 <span style="font-weight:400;color:#bbb;">(선택)</span></label><input class="fi" id="ex" placeholder="예: 2686호선 블럭은 텐트 적치장으로 이동"></div>
+      <div class="f"><label>P/T 탑재 일정</label><input class="fi" id="dl" type="date" onchange="fmtDate('dl','dl-txt')" style="max-width:180px;"><span id="dl-txt" style="font-size:13px;color:#c0392b;font-weight:700;margin-top:4px;display:block;"></span></div>
+      <div class="f">
+        <label>추가 안내 <span style="font-weight:400;color:#bbb;">(선택)</span></label>
+        <input class="fi" id="ex" placeholder="예: 2686호선 블럭은 텐트 적치장으로 이동">
+      </div>
     </div>
   </div>
+
   <div class="card">
     <div class="ch">📅 작업 일정</div>
     <div class="cb">
@@ -118,6 +245,7 @@ select.si{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
       <button class="addbtn" onclick="addS()">＋ 일정 추가</button>
     </div>
   </div>
+
   <div class="card">
     <div class="ch">✅ 담당자 요청사항</div>
     <div class="cb">
@@ -132,10 +260,22 @@ select.si{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 </div>
 </div>
 
+<!-- 미리보기 탭 (iframe 없이 div 직접 렌더링) -->
 <div id="p1" class="pg">
 <div class="pvwrap">
-  <div class="pvnote">📌 PC 이메일 기준 미리보기입니다.<br>HTML 복사 후 아웃룩/메일에 붙여넣기 하세요.</div>
-  <div class="scalebox" id="sb"><iframe id="pf" scrolling="no"></iframe></div>
+  <div class="pvnote">
+    📌 PC 이메일 기준 미리보기입니다.<br>
+    아래 <b>메일 HTML 복사</b> 후 아웃룩 본문에 붙여넣기 하세요.<br>
+    복사가 안 될 경우 <b>텍스트박스</b>에서 직접 전체선택(Ctrl+A) → 복사하세요.
+  </div>
+  <div id="preview-area">
+    <div id="preview-inner"></div>
+  </div>
+  <!-- clipboard 차단 대비 텍스트박스 -->
+  <div id="copy-output">
+    <div id="copy-hint">📋 아래 전체 선택(Ctrl+A) 후 복사하세요:</div>
+    <textarea id="copy-ta" rows="6" readonly></textarea>
+  </div>
 </div>
 <div class="bar">
   <button class="bsave" onclick="doSave()">💾 저장</button>
@@ -143,6 +283,7 @@ select.si{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 </div>
 </div>
 
+<!-- 저장 탭 -->
 <div id="p2" class="pg">
 <div class="hwrap"><div id="HL"></div></div>
 </div>
@@ -150,29 +291,65 @@ select.si{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 <div class="toast" id="toast"></div>
 
 <script>
-var SS=[],AA=[],si=0,ai=0;
-function G(id){return document.getElementById(id);}
-function V(id){return G(id)?G(id).value:'';}
-function E(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-function SV(s){return(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-function OPT(v,l,c){return'<option value="'+v+'"'+(c===v?' selected':'')+'>'+l+'</option>';}
+var SS = [], AA = [], si = 0, ai = 0;
 
-G('sn').value='2665'; G('tk').value='3,4TK';
-G('sender').value='LNG선공사1부설치1과 · 박철성';
-G('urgent').value='P/T 탑재 이벤트 준수를 위해 반드시 일정을 확인하고 조치하여 주시기 바랍니다.';
-G('from').value='VB02'; G('to').value='UE10';
-G('mdate').value='2026.4.30(목)'; G('mtime').value='야간';
-G('dl').value='2026.5.9';
-G('ex').value='작업장 내 2686호선 블럭은 우선 텐트 적치장으로 이동 바랍니다.';
+/* ── 헬퍼 ── */
+function G(id) { return document.getElementById(id); }
+function V(id) { return G(id) ? G(id).value : ''; }
+function E(s) { return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function SV(s) { return (s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function OPT(v, l, c) { return '<option value="'+v+'"'+(c===v?' selected':'')+'>'+l+'</option>'; }
 
-function PS(d,c,n,s){SS.push({id:si++,date:d||'',content:c||'',note:n||'',status:s||'plan'});}
-function PA(t){AA.push({id:ai++,text:t||''});}
+/* ── 날짜 포맷 유틸 (초기값보다 반드시 먼저 정의) ── */
+var DAYS = ['일','월','화','수','목','금','토'];
+function fmtDateStr(val) {
+  if (!val) return '';
+  var p = val.split('-');
+  if (p.length < 3) return val;
+  var yr = parseInt(p[0],10), mo = parseInt(p[1],10)-1, dy = parseInt(p[2],10);
+  if (isNaN(yr)||isNaN(mo)||isNaN(dy)) return val;
+  var d = new Date(yr, mo, dy);
+  if (isNaN(d.getTime())) return val;
+  return yr+'.'+( mo+1 )+'.'+dy+'('+DAYS[d.getDay()]+')';
+}
+function fmtDate(inputId, txtId) {
+  var el = G(txtId); if (!el) return;
+  el.textContent = fmtDateStr(G(inputId) ? G(inputId).value : '');
+}
+function onSchedDate(rid) {
+  var inp = G('s'+rid+'d'), lbl = G('s'+rid+'dtxt');
+  if (!inp) return;
+  var txt = fmtDateStr(inp.value);
+  if (lbl) lbl.textContent = txt;
+  var r = SS.find(function(r){return r.id===rid;});
+  if (r) { r.dateRaw = inp.value; r.date = txt; }
+}
 
-PS('5/2 (토)','L/D COVER 패시베이션','천우테크','done');
-PS('5/4 (월)','L/D COVER 패시베이션 검사','오전 09:00','ing');
-PS('5/4~5/5','보온작업','승인','ing');
-PS('5/6 (수)','보온검사 & TORQUE 검사','오전 검사 후 TACK WD','plan');
+/* ── 초기값 ── */
+G('sn').value    = '2665';
+G('tk').value    = '3,4TK';
+G('sender').value= 'LNG선공사1부설치1과 · 박철성';
+G('urgent').value= 'P/T 탑재 이벤트 준수를 위해 반드시 일정을 확인하고 조치하여 주시기 바랍니다.';
+G('from').value  = 'VB02';
+G('to').value    = 'UE10';
+G('mdate').value = '2026-04-30';
+G('mtime').value = '야간';
+G('dl').value    = '2026-05-09';
+// 라벨 초기 표시
+G('mdate-txt').textContent = fmtDateStr('2026-04-30');
+G('dl-txt').textContent    = fmtDateStr('2026-05-09');
+G('ex').value    = '작업장 내 2686호선 블럭은 우선 텐트 적치장으로 이동 바랍니다.';
+
+/* ── 초기 데이터 ── */
+function PS(d,c,n,s,dr) { SS.push({id:si++, date:d||'', dateRaw:dr||'', content:c||'', note:n||'', status:s||'plan'}); }
+function PA(t) { AA.push({id:ai++, text:t||''}); }
+
+PS('2026.5.2(토)', 'L/D COVER 패시베이션',       '천우테크',             'plan', '2026-05-02');
+PS('2026.5.4(월)', 'L/D COVER 패시베이션 검사',  '오전 09:00',           'plan',  '2026-05-04');
+PS('2026.5.4(월)', '보온작업',                    '승인',                 'plan',  '2026-05-04');
+PS('2026.5.6(수)', '보온검사 & TORQUE 검사',      '오전 검사 후 TACK WD', 'plan', '2026-05-06');
 DS();
+
 PA('돔커버 작업장 내 블럭 탑재 공간 정리를 완료해 주시기 바랍니다.');
 PA('작업장 내 2686호선 블럭은 우선 텐트 적치장으로 이동해 주시기 바랍니다.');
 PA('P/T 탑재 마감일 준수를 위해 일정 지연 없이 진행 바랍니다.');
@@ -180,91 +357,284 @@ PA('일정 변경 또는 이슈 발생 시 즉시 담당자에게 연락 주시�
 DA();
 DH();
 
-function go(n){
-  for(var i=0;i<3;i++){G('p'+i).classList.toggle('on',i===n);G('t'+i).classList.toggle('on',i===n);}
-  if(n===1){syncAll();drawP();}
-  if(n===2)DH();
+/* ── 탭 전환 ── */
+function go(n) {
+  for (var i=0; i<3; i++) {
+    G('p'+i).classList.toggle('on', i===n);
+    G('t'+i).classList.toggle('on', i===n);
+  }
+  if (n===1) { syncAll(); drawPreview(); }
+  if (n===2) DH();
 }
-function syncS(){SS.forEach(function(r){var d=G('s'+r.id+'d'),c=G('s'+r.id+'c'),n=G('s'+r.id+'n'),s=G('s'+r.id+'s');if(d)r.date=d.value;if(c)r.content=c.value;if(n)r.note=n.value;if(s)r.status=s.value;});}
-function syncA(){AA.forEach(function(a){var el=G('a'+a.id);if(el)a.text=el.value;});}
-function syncAll(){syncS();syncA();}
-function addS(){PS();DS();var rows=G('SL').querySelectorAll('.sb');if(rows.length){var inp=rows[rows.length-1].querySelector('input');if(inp)inp.focus();}}
-function delS(id){syncS();SS=SS.filter(function(r){return r.id!==id;});DS();}
-function DS(){
-  var h='';
-  SS.forEach(function(r){
-    h+='<div class="sb"><div class="sb-t">'+
-      '<div><div class="lbl">일자</div><input class="si" id="s'+r.id+'d" type="text" value="'+SV(r.date)+'" placeholder="5/2 (토)"></div>'+
-      '<div><div class="lbl">작업 내용</div><input class="si" id="s'+r.id+'c" type="text" value="'+SV(r.content)+'" placeholder="작업 내용"></div>'+
-      '</div><div class="sb-b">'+
-      '<div><div class="lbl">비고</div><input class="si" id="s'+r.id+'n" type="text" value="'+SV(r.note)+'" placeholder="비고"></div>'+
-      '<div><div class="lbl">상태</div><select class="si" id="s'+r.id+'s">'+OPT('done','✅완료',r.status)+OPT('ing','🔄진행',r.status)+OPT('plan','📌예정',r.status)+'</select></div>'+
-      '<button class="xb" onclick="delS('+r.id+')">✕</button>'+
-    '</div></div>';
+
+/* ── 일정 ── */
+function syncS() {
+  SS.forEach(function(r) {
+    var d=G('s'+r.id+'d'), c=G('s'+r.id+'c'), n=G('s'+r.id+'n'), s=G('s'+r.id+'s');
+    if(d){ r.dateRaw=d.value; r.date=d.value?fmtDateStr(d.value):r.date; }
+    if(c) r.content=c.value;
+    if(n) r.note=n.value; if(s) r.status=s.value;
   });
-  G('SL').innerHTML=h;
 }
-function addA(){PA();DA();var rows=G('AL').querySelectorAll('.ab');if(rows.length){var inp=rows[rows.length-1].querySelector('input');if(inp)inp.focus();}}
-function delA(id){syncA();AA=AA.filter(function(a){return a.id!==id;});DA();}
-function DA(){
-  var h='';
-  AA.forEach(function(a){
-    h+='<div class="ab"><input class="ai" id="a'+a.id+'" type="text" value="'+SV(a.text)+'" placeholder="요청사항 입력..."><button class="xb" onclick="delA('+a.id+')">✕</button></div>';
+function addS() {
+  PS(); DS();
+  var rows = G('SL').querySelectorAll('.sb');
+  if (rows.length) { var inp = rows[rows.length-1].querySelector('input'); if(inp) inp.focus(); }
+}
+function delS(id) { syncS(); SS = SS.filter(function(r){return r.id!==id;}); DS(); }
+function DS() {
+  var h = '';
+  SS.forEach(function(r) {
+    h += '<div class="sb">'
+      + '<div class="sb-t">'
+        + '<div><div class="lbl">일자</div><input class="si" id="s'+r.id+'d" type="date" value="'+SV(r.dateRaw||'')+'" onchange="onSchedDate('+r.id+')"><div id="s'+r.id+'dtxt" style="font-size:11px;color:#0057c2;font-weight:700;margin-top:2px;">'+SV(r.date)+'</div></div>'
+        + '<div><div class="lbl">작업 내용</div><input class="si" id="s'+r.id+'c" type="text" value="'+SV(r.content)+'" placeholder="작업 내용"></div>'
+      + '</div>'
+      + '<div class="sb-b">'
+        + '<div><div class="lbl">비고</div><input class="si" id="s'+r.id+'n" type="text" value="'+SV(r.note)+'" placeholder="비고"></div>'
+        + '<div><div class="lbl">상태</div>'
+          + '<select class="si" id="s'+r.id+'s">'
+            + OPT('done','✅완료',r.status)+OPT('ing','🔄진행',r.status)+OPT('plan','📌예정',r.status)
+          + '</select>'
+        + '</div>'
+        + '<button class="xb" onclick="delS('+r.id+')">✕</button>'
+      + '</div>'
+    + '</div>';
   });
-  G('AL').innerHTML=h;
+  G('SL').innerHTML = h;
 }
-function buildMail(){
+
+/* ── 요청사항 ── */
+function syncA() {
+  AA.forEach(function(a) { var el=G('a'+a.id); if(el) a.text=el.value; });
+}
+function addA() {
+  PA(); DA();
+  var rows = G('AL').querySelectorAll('.ab');
+  if (rows.length) { var inp = rows[rows.length-1].querySelector('input'); if(inp) inp.focus(); }
+}
+function delA(id) { syncA(); AA = AA.filter(function(a){return a.id!==id;}); DA(); }
+function DA() {
+  var h = '';
+  AA.forEach(function(a) {
+    h += '<div class="ab">'
+      + '<input class="ai" id="a'+a.id+'" type="text" value="'+SV(a.text)+'" placeholder="요청사항 입력...">'
+      + '<button class="xb" onclick="delA('+a.id+')">✕</button>'
+    + '</div>';
+  });
+  G('AL').innerHTML = h;
+}
+function syncAll() { syncS(); syncA(); }
+
+/* ── 메일 HTML 생성 ── */
+function buildMail() {
   syncAll();
-  var sn=V('sn')||'XXXX',tk=V('tk'),sender=V('sender'),urgent=V('urgent'),
-      from=V('from'),to=V('to'),mdate=V('mdate'),mtime=V('mtime'),dl=V('dl'),ex=V('ex');
- function bdg(st){var m={done:['#d4edda','#1a7a4a','완료'],ing:['#fff3cd','#7a5700','진행중'],plan:['#e8f0fe','#003087','예정']};var b=m[st]||m.plan;return'<span style="display:inline-block;padding:4px 14px;border-radius:20px;font-size:13px;font-weight:800;background:'+b[0]+';color:'+b[1]+';">'+b[2]+'</span>';}
-  var sR='';
-  SS.forEach(function(r,i){sR+='<tr style="background:'+(i%2?'#f7f9fc':'#fff')+'"><td style="padding:14px 18px;text-align:center;font-size:15px;font-weight:800;border-bottom:1px solid #eef0f3;vertical-align:middle;white-space:nowrap"><strong>'+E(r.date)+'</strong></td><td style="padding:14px 18px;text-align:center;font-size:15px;font-weight:700;border-bottom:1px solid #eef0f3;vertical-align:middle">'+E(r.content)+'</td><td style="padding:14px 18px;text-align:center;font-size:14px;font-weight:700;color:#555;border-bottom:1px solid #eef0f3;vertical-align:middle">'+E(r.note)+'</td><td style="padding:14px 18px;text-align:center;border-bottom:1px solid #eef0f3;vertical-align:middle">'+bdg(r.status)+'</td></tr>';});
-  var aR='';
-  AA.forEach(function(a){if(!a.text)return;aR+='<tr><td style="padding:9px 0;font-size:14px;font-weight:700;color:#333;line-height:1.7;border-bottom:1px solid #f5e8e8"><span style="color:#c0392b;margin-right:8px">▶</span>'+E(a.text)+'</td></tr>';});
-  var sS=sR?'<div style="padding:26px 32px;border-bottom:1px solid #eef0f3"><div style="font-size:11px;font-weight:800;color:#aaa;letter-spacing:1.5px;margin-bottom:16px">📅 작업 일정</div><table style="width:100%;border-collapse:collapse"><thead><tr style="background:#002a6e"><th style="padding:14px 18px;text-align:center;font-size:14px;font-weight:800;color:#fff">일자</th><th style="padding:14px 18px;text-align:center;font-size:14px;font-weight:800;color:#fff">작업 내용</th><th style="padding:14px 18px;text-align:center;font-size:14px;font-weight:800;color:#fff">비고</th><th style="padding:14px 18px;text-align:center;font-size:14px;font-weight:800;color:#fff">상태</th></tr></thead><tbody>'+sR+'</tbody></table></div>':'';
-  var aS=aR?'<div style="padding:26px 32px;border-bottom:1px solid #eef0f3"><div style="font-size:11px;font-weight:800;color:#aaa;letter-spacing:1.5px;margin-bottom:16px">✅ 담당자 조치 요청사항</div><div style="background:#fff5f5;border:2px solid #ffcccc;border-radius:14px;padding:20px 22px"><div style="font-size:15px;font-weight:800;color:#c0392b;margin-bottom:14px">🔴 아래 사항을 반드시 확인해 주세요</div><table style="width:100%;border-collapse:collapse">'+aR+'</table></div></div>':'';
-  var xL=ex?'<div style="font-size:13px;font-weight:800;color:#666;text-align:center;margin-top:12px">※ '+E(ex)+'</div>':'';
-  return'<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"><style>@import url(\'https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap\');body{margin:0;padding:28px 20px;background:#eef1f6;font-family:\'Nanum Gothic\',\'Apple SD Gothic Neo\',sans-serif}</style></head><body><div style="max-width:680px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 8px 40px rgba(0,42,110,.15)"><div style="background:linear-gradient(135deg,#002a6e,#0057c2);padding:32px 36px;overflow:hidden;position:relative"><div style="position:absolute;top:-70px;right:-70px;width:240px;height:240px;border-radius:50%;background:rgba(255,255,255,.05)"></div><div style="display:inline-block;background:#ff3333;color:#fff;font-size:11px;font-weight:800;letter-spacing:1px;padding:4px 14px;border-radius:6px;margin-bottom:14px">🚢 블럭이동 공식 공지</div><div style="color:#fff;font-size:22px;font-weight:800;line-height:1.45">[동커버] SN'+E(sn)+' 블럭 이동 요청<br><span style="color:#7ec8ff;font-size:26px">'+E(from)+' → '+E(to)+'</span></div><div style="color:rgba(255,255,255,.65);font-size:13px;margin-top:10px;font-weight:700">발신: '+E(sender)+'</div></div><div style="background:#fff8e1;border-left:6px solid #ffc107;padding:16px 26px;display:flex;align-items:flex-start;gap:14px"><span style="font-size:24px;flex-shrink:0">⚠️</span><span style="font-size:15px;font-weight:800;color:#7a5700;line-height:1.6">'+E(urgent)+'</span></div><div style="padding:26px 32px;border-bottom:1px solid #eef0f3"><div style="font-size:11px;font-weight:800;color:#aaa;letter-spacing:1.5px;margin-bottom:16px">📋 핵심 정보</div><table style="width:100%;border-collapse:separate;border-spacing:10px;margin:-10px"><tr><td style="background:#e8f0fe;border-radius:12px;padding:18px 20px;border:1px solid #b3c8fa;width:50%"><div style="font-size:11px;color:#7a8599;font-weight:800;margin-bottom:6px">선번 / TK</div><div style="font-size:22px;font-weight:800;color:#002a6e">SN'+E(sn)+' · '+E(tk)+'</div></td><td style="background:#fff5f5;border-radius:12px;padding:18px 20px;border:1px solid #ffcccc;width:50%"><div style="font-size:11px;color:#7a8599;font-weight:800;margin-bottom:6px">P/T 탑재 마감</div><div style="font-size:22px;font-weight:800;color:#c0392b">'+E(dl)+'</div></td></tr><tr><td style="background:#f7f9fc;border-radius:12px;padding:18px 20px;border:1px solid #e4e8ee"><div style="font-size:11px;color:#7a8599;font-weight:800;margin-bottom:6px">블럭 이동일</div><div style="font-size:22px;font-weight:800;color:#002a6e">'+E(mdate)+'</div></td><td style="background:#f7f9fc;border-radius:12px;padding:18px 20px;border:1px solid #e4e8ee"><div style="font-size:11px;color:#7a8599;font-weight:800;margin-bottom:6px">이동 시간대</div><div style="font-size:22px;font-weight:800;color:#002a6e">'+E(mtime)+'</div></td></tr></table></div><div style="padding:26px 32px;border-bottom:1px solid #eef0f3"><div style="font-size:11px;font-weight:800;color:#aaa;letter-spacing:1.5px;margin-bottom:16px">🔀 블럭 이동 경로</div><div style="background:#f7f9fc;border-radius:14px;padding:24px;display:flex;align-items:center;justify-content:center;gap:24px;border:1px solid #e4e8ee"><div style="text-align:center"><div style="font-size:12px;color:#999;font-weight:800;margin-bottom:8px">출발 (현재 위치)</div><div style="font-size:40px;font-weight:800;color:#c0392b;line-height:1">'+(E(from)||'—')+'</div></div><div style="font-size:40px;font-weight:800;color:#002a6e;padding-top:20px">→</div><div style="text-align:center"><div style="font-size:12px;color:#999;font-weight:800;margin-bottom:8px">도착 (목적 위치)</div><div style="font-size:40px;font-weight:800;color:#1a7a4a;line-height:1">'+(E(to)||'—')+'</div></div></div>'+xL+'</div>'+sS+aS+'<div style="background:#f4f7fc;padding:18px 32px;text-align:center;font-size:13px;font-weight:800;color:#888;border-top:1px solid #eef0f3">문의: '+E(sender)+' | 본 메일은 공식 블럭이동 공지입니다.</div></div></body></html>';
+  var sn=V('sn')||'XXXX', tk=V('tk'), sender=V('sender'), urgent=V('urgent');
+  var from=V('from'), to=V('to'), dl=V('dl'), ex=V('ex');
+  var mdate = fmtDateStr(V('mdate')) || V('mdate');
+  var mtime = V('mtime');
+  var dlFmt = fmtDateStr(dl) || dl;
+
+  function bdg(st) {
+    var m = {done:['#d4edda','#1a7a4a','완료'], ing:['#fff3cd','#7a5700','진행중'], plan:['#e8f0fe','#003087','예정']};
+    var b = m[st]||m.plan;
+    return '<span style="display:inline-block;padding:4px 14px;border-radius:20px;font-size:13px;font-weight:700;background:'+b[0]+';color:'+b[1]+';">'+b[2]+'</span>';
+  }
+
+  var sR = '';
+  SS.forEach(function(r,i) {
+    sR += '<tr style="background:'+(i%2?'#f7f9fc':'#fff')+'">'
+      + '<td style="padding:14px 18px;text-align:center;font-size:15px;font-weight:700;border-bottom:1px solid #eef0f3;vertical-align:middle;white-space:nowrap;"><strong>'+E(r.date)+'</strong></td>'
+      + '<td style="padding:14px 18px;text-align:center;font-size:15px;font-weight:700;border-bottom:1px solid #eef0f3;vertical-align:middle;">'+E(r.content)+'</td>'
+      + '<td style="padding:14px 18px;text-align:center;font-size:14px;color:#555;border-bottom:1px solid #eef0f3;vertical-align:middle;">'+E(r.note)+'</td>'
+      + '<td style="padding:14px 18px;text-align:center;border-bottom:1px solid #eef0f3;vertical-align:middle;">'+bdg(r.status)+'</td>'
+    + '</tr>';
+  });
+
+  var aR = '';
+  AA.forEach(function(a) {
+    if (!a.text) return;
+    aR += '<tr><td style="padding:9px 0;font-size:14px;color:#333;line-height:1.7;border-bottom:1px solid #f5e8e8;">'
+      + '<span style="color:#c0392b;margin-right:8px;">&#9658;</span>'+E(a.text)
+    + '</td></tr>';
+  });
+
+  var sS = sR ? (
+    '<div style="padding:26px 32px;border-bottom:1px solid #eef0f3;">'
+    + '<div style="font-size:11px;font-weight:700;color:#aaa;letter-spacing:1.5px;margin-bottom:16px;">&#128197; 작업 일정</div>'
+    + '<table style="width:100%;border-collapse:collapse;">'
+    + '<thead><tr style="background:#002a6e;">'
+    + '<th style="padding:14px 18px;text-align:center;font-size:14px;font-weight:700;color:#fff;">일자</th>'
+    + '<th style="padding:14px 18px;text-align:center;font-size:14px;font-weight:700;color:#fff;">작업 내용</th>'
+    + '<th style="padding:14px 18px;text-align:center;font-size:14px;font-weight:700;color:#fff;">비고</th>'
+    + '<th style="padding:14px 18px;text-align:center;font-size:14px;font-weight:700;color:#fff;">상태</th>'
+    + '</tr></thead><tbody>'+sR+'</tbody></table></div>'
+  ) : '';
+
+  var aS = aR ? (
+    '<div style="padding:26px 32px;border-bottom:1px solid #eef0f3;">'
+    + '<div style="font-size:11px;font-weight:700;color:#aaa;letter-spacing:1.5px;margin-bottom:16px;">&#9989; 담당자 조치 요청사항</div>'
+    + '<div style="background:#fff5f5;border:2px solid #ffcccc;border-radius:14px;padding:20px 22px;">'
+    + '<div style="font-size:15px;font-weight:700;color:#c0392b;margin-bottom:14px;">&#128308; 아래 사항을 반드시 확인해 주세요</div>'
+    + '<table style="width:100%;border-collapse:collapse;">'+aR+'</table>'
+    + '</div></div>'
+  ) : '';
+
+  var xL = ex ? '<div style="font-size:13px;color:#666;text-align:center;margin-top:12px;">&#8251; '+E(ex)+'</div>' : '';
+
+  return '<!DOCTYPE html>'
+  + '<html lang="ko"><head><meta charset="UTF-8">'
+  + '<style>body{margin:0;padding:28px 20px;background:#eef1f6;font-family:\'Apple SD Gothic Neo\',\'Malgun Gothic\',\'\\B9D1\\C740 \\ACE0\\B515\',sans-serif;}</style>'
+  + '</head><body>'
+  + '<div style="max-width:680px;margin:0 auto;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 8px 40px rgba(0,42,110,.15);">'
+
+  + '<div style="background:linear-gradient(135deg,#002a6e,#0057c2);padding:32px 36px;position:relative;overflow:hidden;">'
+  + '<div style="display:inline-block;background:#ff3333;color:#fff;font-size:11px;font-weight:700;letter-spacing:1px;padding:4px 14px;border-radius:6px;margin-bottom:14px;">&#128674; 블럭이동 공식 공지</div>'
+  + '<div style="color:#fff;font-size:22px;font-weight:700;line-height:1.45;">[동커버] SN'+E(sn)+' 블럭 이동 요청<br><span style="color:#7ec8ff;font-size:26px;">'+E(from)+' &#8594; '+E(to)+'</span></div>'
+  + '<div style="color:rgba(255,255,255,.65);font-size:13px;margin-top:10px;">발신: '+E(sender)+'</div>'
+  + '</div>'
+
+  + '<div style="background:#fff8e1;border-left:6px solid #ffc107;padding:16px 26px;">'
+  + '<span style="font-size:15px;font-weight:700;color:#7a5700;line-height:1.6;">&#9888;&#65039; '+E(urgent)+'</span>'
+  + '</div>'
+
+  + '<div style="padding:26px 32px;border-bottom:1px solid #eef0f3;">'
+  + '<div style="font-size:11px;font-weight:700;color:#aaa;letter-spacing:1.5px;margin-bottom:16px;">&#128203; 핵심 정보</div>'
+  + '<table style="width:100%;border-collapse:separate;border-spacing:10px;margin:-10px;"><tr>'
+  + '<td style="background:#e8f0fe;border-radius:12px;padding:18px 20px;border:1px solid #b3c8fa;width:50%;"><div style="font-size:11px;color:#7a8599;margin-bottom:6px;">선번 / TK</div><div style="font-size:22px;font-weight:700;color:#002a6e;">SN'+E(sn)+' · '+E(tk)+'</div></td>'
+  + '<td style="background:#fff5f5;border-radius:12px;padding:18px 20px;border:1px solid #ffcccc;width:50%;"><div style="font-size:11px;color:#7a8599;margin-bottom:6px;">P/T 탑재 마감</div><div style="font-size:22px;font-weight:700;color:#c0392b;">'+E(dlFmt)+'</div></td>'
+  + '</tr><tr>'
+  + '<td style="background:#f7f9fc;border-radius:12px;padding:18px 20px;border:1px solid #e4e8ee;"><div style="font-size:11px;color:#7a8599;margin-bottom:6px;">블럭 이동일</div><div style="font-size:22px;font-weight:700;color:#002a6e;">'+E(mdate)+'</div></td>'
+  + '<td style="background:#f7f9fc;border-radius:12px;padding:18px 20px;border:1px solid #e4e8ee;"><div style="font-size:11px;color:#7a8599;margin-bottom:6px;">이동 시간대</div><div style="font-size:22px;font-weight:700;color:#002a6e;">'+E(mtime)+'</div></td>'
+  + '</tr></table></div>'
+
+  + '<div style="padding:26px 32px;border-bottom:1px solid #eef0f3;">'
+  + '<div style="font-size:11px;font-weight:700;color:#aaa;letter-spacing:1.5px;margin-bottom:16px;">&#128260; 블럭 이동 경로</div>'
+  + '<div style="background:#f7f9fc;border-radius:14px;padding:24px;text-align:center;border:1px solid #e4e8ee;">'
+  + '<table style="margin:0 auto;border-collapse:collapse;"><tr>'
+  + '<td style="text-align:center;padding:0 20px;"><div style="font-size:12px;color:#999;margin-bottom:8px;">출발 (현재 위치)</div><div style="font-size:40px;font-weight:700;color:#c0392b;">'+(E(from)||'—')+'</div></td>'
+  + '<td style="font-size:36px;font-weight:700;color:#002a6e;padding:0 10px;">&#8594;</td>'
+  + '<td style="text-align:center;padding:0 20px;"><div style="font-size:12px;color:#999;margin-bottom:8px;">도착 (목적 위치)</div><div style="font-size:40px;font-weight:700;color:#1a7a4a;">'+(E(to)||'—')+'</div></td>'
+  + '</tr></table>'
+  + '</div>'+xL+'</div>'
+
+  + sS + aS
+
+  + '<div style="background:#f4f7fc;padding:18px 32px;text-align:center;font-size:13px;color:#888;border-top:1px solid #eef0f3;">'
+  + '문의: '+E(sender)+' | 본 메일은 공식 블럭이동 공지입니다.'
+  + '</div>'
+  + '</div></body></html>';
 }
-function drawP(){
-  var html=buildMail(),fr=G('pf');
-  var doc=fr.contentDocument||fr.contentWindow.document;
-  doc.open();doc.write(html);doc.close();
-  setTimeout(function(){var box=G('sb'),w=box.clientWidth,scale=Math.min(1,w/728);var h=doc.documentElement.scrollHeight||doc.body.scrollHeight||600;fr.style.width=(w/scale)+'px';fr.style.height=(h+40)+'px';fr.style.transform='scale('+scale+')';box.style.height=((h+40)*scale)+'px';},300);
+
+/* ── 미리보기: iframe 없이 div에 직접 렌더 ── */
+function drawPreview() {
+  var html = buildMail();
+  var inner = G('preview-inner');
+  /* srcdoc 방식 없이 innerHTML로 직접 삽입 */
+  var parser = new DOMParser();
+  var doc = parser.parseFromString(html, 'text/html');
+  var body = doc.body;
+  inner.innerHTML = body.innerHTML;
 }
-function doCopy(){
-  navigator.clipboard.writeText(buildMail()).then(function(){
-    toast('📋 메일 HTML 복사 완료!');
-    ['bc0','bc1'].forEach(function(id){var b=G(id);if(!b)return;b.classList.add('ok');b.textContent='✅ 복사 완료!';setTimeout(function(){b.classList.remove('ok');b.textContent='📋 메일 HTML 복사';},2000);});
-  }).catch(function(){toast('⚠️ 복사 실패');});
+
+/* ── 복사 (clipboard 실패시 textarea 폴백) ── */
+function doCopy() {
+  var html = buildMail();
+  var out = G('copy-output');
+  var ta  = G('copy-ta');
+
+  function showFallback() {
+    ta.value = html;
+    out.style.display = 'block';
+    ta.focus();
+    ta.select();
+    toast('📋 아래 텍스트박스에서 전체선택 후 복사하세요!');
+  }
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(html).then(function() {
+      toast('📋 메일 HTML 복사 완료!');
+      out.style.display = 'none';
+      ['bc0','bc1'].forEach(function(id) {
+        var b = G(id); if (!b) return;
+        b.classList.add('ok'); b.textContent = '✅ 복사 완료!';
+        setTimeout(function(){ b.classList.remove('ok'); b.textContent = '📋 메일 HTML 복사'; }, 2000);
+      });
+    }).catch(showFallback);
+  } else {
+    /* 구형 브라우저 / file:// 폴백 */
+    try {
+      ta.value = html;
+      out.style.display = 'block';
+      ta.focus(); ta.select();
+      document.execCommand('copy');
+      toast('📋 복사 완료! (execCommand)');
+    } catch(e) {
+      showFallback();
+    }
+  }
 }
-function GH(){try{return JSON.parse(localStorage.getItem('bm5')||'[]');}catch(e){return[];}}
-function doSave(){
+
+/* ── 저장/불러오기 ── */
+function GH() { try { return JSON.parse(localStorage.getItem('bm6')||'[]'); } catch(e) { return []; } }
+
+function doSave() {
   syncAll();
-  var d={id:Date.now(),at:new Date().toLocaleDateString('ko-KR'),sn:V('sn'),tk:V('tk'),sender:V('sender'),urgent:V('urgent'),from:V('from'),to:V('to'),date:V('mdate'),time:V('mtime'),dl:V('dl'),ex:V('ex'),SS:JSON.parse(JSON.stringify(SS)),AA:JSON.parse(JSON.stringify(AA))};
-  var h=GH();h.unshift(d);localStorage.setItem('bm5',JSON.stringify(h.slice(0,30)));
+  var d = {
+    id: Date.now(), at: new Date().toLocaleDateString('ko-KR'),
+    sn:V('sn'), tk:V('tk'), sender:V('sender'), urgent:V('urgent'),
+    from:V('from'), to:V('to'), date:V('mdate'), time:V('mtime'),
+    dl:V('dl'), ex:V('ex'),
+    SS: JSON.parse(JSON.stringify(SS)),
+    AA: JSON.parse(JSON.stringify(AA))
+  };
+  var h = GH(); h.unshift(d);
+  localStorage.setItem('bm6', JSON.stringify(h.slice(0,30)));
   toast('💾 저장 완료!');
 }
-function loadH(id){
-  var d=GH().find(function(h){return h.id===id;});if(!d)return;
-  G('sn').value=d.sn||'';G('tk').value=d.tk||'';G('sender').value=d.sender||'';G('urgent').value=d.urgent||'';
-  G('from').value=d.from||'';G('to').value=d.to||'';G('mdate').value=d.date||'';G('mtime').value=d.time||'야간';
-  G('dl').value=d.dl||'';G('ex').value=d.ex||'';
-  SS=d.SS||[];AA=d.AA||[];
-  si=SS.length?Math.max.apply(null,SS.map(function(r){return r.id;}))+1:0;
-  ai=AA.length?Math.max.apply(null,AA.map(function(a){return a.id;}))+1:0;
-  DS();DA();go(0);toast('✅ 불러오기 완료!');
+
+function loadH(id) {
+  var d = GH().find(function(h){return h.id===id;}); if(!d) return;
+  G('sn').value=d.sn||'';      G('tk').value=d.tk||'';
+  G('sender').value=d.sender||''; G('urgent').value=d.urgent||'';
+  G('from').value=d.from||'';  G('to').value=d.to||'';
+  G('mdate').value=d.date||''; G('mtime').value=d.time||'야간';
+  G('dl').value=d.dl||'';      G('ex').value=d.ex||'';
+  SS=d.SS||[]; AA=d.AA||[];
+  si = SS.length ? Math.max.apply(null, SS.map(function(r){return r.id;}))+1 : 0;
+  ai = AA.length ? Math.max.apply(null, AA.map(function(a){return a.id;}))+1 : 0;
+  DS(); DA(); go(0); toast('✅ 불러오기 완료!');
 }
-function delH(id){localStorage.setItem('bm5',JSON.stringify(GH().filter(function(h){return h.id!==id;})));DH();toast('🗑 삭제 완료');}
-function DH(){
-  var h=GH(),el=G('HL');
-  if(!h.length){el.innerHTML='<div class="hemp"><div class="ico">📭</div><p>저장된 공지가 없습니다.<br>작성 후 저장 버튼을 눌러주세요.</p></div>';return;}
-  var html='<div style="font-size:12px;font-weight:800;color:#7a8599;margin-bottom:10px">총 '+h.length+'개 저장됨</div>';
-  h.forEach(function(d){html+='<div class="hc" onclick="loadH('+d.id+')"><button class="hc-x" onclick="event.stopPropagation();delH('+d.id+')">✕</button><div class="hc-sn">SN'+SV(d.sn)+' · '+SV(d.tk)+'</div><div class="hc-rt">'+SV(d.from)+' → '+SV(d.to)+'</div><div class="hc-mt">📅 이동일: '+SV(d.date)+'<br>⏰ 마감: '+SV(d.dl)+'<br>🕐 저장: '+d.at+'</div></div>';});
-  el.innerHTML=html;
+
+function delH(id) {
+  localStorage.setItem('bm6', JSON.stringify(GH().filter(function(h){return h.id!==id;})));
+  DH(); toast('🗑 삭제 완료');
 }
-function toast(msg){var t=G('toast');t.textContent=msg;t.classList.add('on');setTimeout(function(){t.classList.remove('on');},2500);}
+
+function DH() {
+  var h = GH(), el = G('HL');
+  if (!h.length) {
+    el.innerHTML = '<div class="hemp"><div class="ico">📭</div><p>저장된 공지가 없습니다.<br>작성 후 저장 버튼을 눌러주세요.</p></div>';
+    return;
+  }
+  var html = '<div style="font-size:12px;font-weight:700;color:#7a8599;margin-bottom:10px;">총 '+h.length+'개 저장됨</div>';
+  h.forEach(function(d) {
+    html += '<div class="hc" onclick="loadH('+d.id+')">'
+      + '<button class="hc-x" onclick="event.stopPropagation();delH('+d.id+')">✕</button>'
+      + '<div class="hc-sn">SN'+SV(d.sn)+' · '+SV(d.tk)+'</div>'
+      + '<div class="hc-rt">'+SV(d.from)+' → '+SV(d.to)+'</div>'
+      + '<div class="hc-mt">📅 이동일: '+SV(d.date)+'<br>⏰ 마감: '+SV(d.dl)+'<br>🕐 저장: '+d.at+'</div>'
+    + '</div>';
+  });
+  el.innerHTML = html;
+}
+
+/* ── 토스트 ── */
+function toast(msg) {
+  var t = G('toast');
+  t.textContent = msg; t.classList.add('on');
+  setTimeout(function(){ t.classList.remove('on'); }, 2500);
+}
 </script>
 </body>
 </html>
